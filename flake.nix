@@ -160,12 +160,14 @@
             gitPlugins = with pkgs.neovimPlugins; [ ];
             general = with pkgs.vimPlugins; [
               conform-nvim
-              nvim-treesitter.withAllGrammars
+              neo-tree-nvim
               nvim-lspconfig
+              nvim-treesitter.withAllGrammars
+              nvim-web-devicons
               tint-nvim
               tokyonight-nvim
-              which-key-nvim
               vim-tmux-navigator
+              which-key-nvim
             ];
           };
 

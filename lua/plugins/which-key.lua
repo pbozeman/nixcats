@@ -10,6 +10,7 @@ wk.setup({
     {
       mode = { "n", "v" },
       { "<leader><tab>", group = "tabs" },
+      { "<leader>b", group = "buffer" },
       { "<leader>c", group = "code" },
       { "<leader>f", group = "file/find" },
       { "<leader>g", group = "git" },
