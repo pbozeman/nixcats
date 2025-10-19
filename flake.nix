@@ -76,7 +76,56 @@
         # this includes LSPs
         lspsAndRuntimeDeps = {
           general = with pkgs; [
-            nil # Nix LSP
+            # Bash
+            nodePackages.bash-language-server
+
+            # C/C++
+            clang-tools
+
+            # CMake
+            cmake-format
+            neocmakelsp
+
+            # Go
+            gopls
+
+            # JavaScript/TypeScript
+            nodePackages.prettier
+            nodePackages.typescript-language-server
+
+            # Lua
+            lua-language-server
+            stylua
+
+            # Markdown
+            markdownlint-cli2
+            marksman
+
+            # Nix
+            nil
+
+            # Python
+            black
+            pyright
+
+            # Quarto (markdown-based scientific documents)
+            quarto
+
+            # Rust
+            rust-analyzer
+
+            # TOML
+            taplo
+
+            # Verilog/SystemVerilog
+            svls
+            verible
+
+            # Web (HTML, CSS, JSON, ESLint)
+            nodePackages.vscode-langservers-extracted
+
+            # YAML
+            nodePackages.yaml-language-server
           ];
         };
 

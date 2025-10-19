@@ -28,22 +28,140 @@ vim.diagnostic.config({
   },
 })
 
--- Setup Nix LSP using new vim.lsp.config API
-vim.lsp.config('nil_ls', {
-  cmd = { 'nil' },
-  filetypes = { 'nix' },
-  root_markers = { 'flake.nix', '.git' },
-  capabilities = {
-    workspace = {
-      fileOperations = {
-        didRename = true,
-        willRename = true,
+-- Setup LSPs using new vim.lsp.config API
+local lsp_servers = {
+  -- Bash
+  bashls = {
+    cmd = { 'bash-language-server', 'start' },
+    filetypes = { 'sh', 'bash' },
+  },
+
+  -- C/C++
+  clangd = {
+    cmd = { 'clangd' },
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+  },
+
+  -- CMake
+  neocmake = {
+    cmd = { 'neocmakelsp', '--stdio' },
+    filetypes = { 'cmake' },
+    root_markers = { 'CMakeLists.txt', '.git' },
+  },
+
+  -- Go
+  gopls = {
+    cmd = { 'gopls' },
+    filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+    root_markers = { 'go.mod', 'go.work', '.git' },
+  },
+
+  -- JavaScript/TypeScript
+  ts_ls = {
+    cmd = { 'typescript-language-server', '--stdio' },
+    filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+    root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+  },
+
+  -- Lua
+  lua_ls = {
+    cmd = { 'lua-language-server' },
+    filetypes = { 'lua' },
+    root_markers = { '.luarc.json', '.luacheckrc', '.stylua.toml', 'stylua.toml', '.git' },
+    settings = {
+      Lua = {
+        runtime = { version = 'LuaJIT' },
+        workspace = {
+          checkThirdParty = false,
+          library = { vim.env.VIMRUNTIME },
+        },
+        telemetry = { enable = false },
       },
     },
   },
-})
 
-vim.lsp.enable('nil_ls')
+  -- Markdown
+  marksman = {
+    cmd = { 'marksman', 'server' },
+    filetypes = { 'markdown', 'markdown.mdx' },
+    root_markers = { '.marksman.toml', '.git' },
+  },
+
+  -- Nix
+  nil_ls = {
+    cmd = { 'nil' },
+    filetypes = { 'nix' },
+    root_markers = { 'flake.nix', '.git' },
+    capabilities = {
+      workspace = {
+        fileOperations = {
+          didRename = true,
+          willRename = true,
+        },
+      },
+    },
+  },
+
+  -- Python
+  pyright = {
+    cmd = { 'pyright-langserver', '--stdio' },
+    filetypes = { 'python' },
+    root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', '.git' },
+  },
+
+  -- Rust
+  rust_analyzer = {
+    cmd = { 'rust-analyzer' },
+    filetypes = { 'rust' },
+    root_markers = { 'Cargo.toml', 'rust-project.json' },
+  },
+
+  -- TOML
+  taplo = {
+    cmd = { 'taplo', 'lsp', 'stdio' },
+    filetypes = { 'toml' },
+  },
+
+  -- Verilog/SystemVerilog
+  svls = {
+    cmd = { 'svls' },
+    filetypes = { 'verilog', 'systemverilog' },
+    root_markers = { '.svls.toml', '.git' },
+  },
+
+  -- Web (HTML, CSS, JSON, ESLint)
+  html = {
+    cmd = { 'vscode-html-language-server', '--stdio' },
+    filetypes = { 'html', 'templ' },
+  },
+
+  cssls = {
+    cmd = { 'vscode-css-language-server', '--stdio' },
+    filetypes = { 'css', 'scss', 'less' },
+  },
+
+  jsonls = {
+    cmd = { 'vscode-json-language-server', '--stdio' },
+    filetypes = { 'json', 'jsonc' },
+  },
+
+  eslint = {
+    cmd = { 'vscode-eslint-language-server', '--stdio' },
+    filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte' },
+  },
+
+  -- YAML
+  yamlls = {
+    cmd = { 'yaml-language-server', '--stdio' },
+    filetypes = { 'yaml', 'yaml.docker-compose' },
+  },
+}
+
+-- Register and enable all LSP servers
+for name, config in pairs(lsp_servers) do
+  vim.lsp.config(name, config)
+  vim.lsp.enable(name)
+end
 
 -- Enable inlay hints by default
 vim.api.nvim_create_autocmd('LspAttach', {
