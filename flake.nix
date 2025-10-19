@@ -26,10 +26,11 @@
 
   # see :help nixCats.flake.outputs
   outputs =
-    { self
-    , nixpkgs
-    , nixCats
-    , ...
+    {
+      self,
+      nixpkgs,
+      nixCats,
+      ...
     }@inputs:
     let
       inherit (nixCats) utils;
@@ -86,13 +87,14 @@
       # and
       # :help nixCats.flake.outputs.categoryDefinitions.scheme
       categoryDefinitions =
-        { pkgs
-        , settings
-        , categories
-        , extra
-        , name
-        , mkPlugin
-        , ...
+        {
+          pkgs,
+          settings,
+          categories,
+          extra,
+          name,
+          mkPlugin,
+          ...
         }@packageDef:
         {
           # to define and use a new category, simply add a new list to a set
@@ -285,48 +287,47 @@
     in
 
     # see :help nixCats.flake.outputs.exports
-    forEachSystem
-      (
-        system:
-        let
-          nixCatsBuilder = utils.baseBuilder luaPath
-            {
-              inherit
-                nixpkgs
-                system
-                dependencyOverlays
-                extra_pkg_config
-                ;
-            }
-            categoryDefinitions
-            packageDefinitions;
-          defaultPackage = nixCatsBuilder defaultPackageName;
+    forEachSystem (
+      system:
+      let
+        nixCatsBuilder = utils.baseBuilder luaPath {
+          inherit
+            nixpkgs
+            system
+            dependencyOverlays
+            extra_pkg_config
+            ;
+        } categoryDefinitions packageDefinitions;
+        defaultPackage = nixCatsBuilder defaultPackageName;
 
-          # this is just for using utils such as pkgs.mkShell
-          # The one used to build neovim is resolved inside the builder
-          # and is passed to our categoryDefinitions and packageDefinitions
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          # these outputs will be wrapped with ${system} by utils.eachSystem
+        # this is just for using utils such as pkgs.mkShell
+        # The one used to build neovim is resolved inside the builder
+        # and is passed to our categoryDefinitions and packageDefinitions
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
+        # these outputs will be wrapped with ${system} by utils.eachSystem
 
-          # this will make a package out of each of the packageDefinitions defined
-          # above and set the default package to the one passed in here.
-          packages = utils.mkAllWithDefault defaultPackage;
+        # this will make a package out of each of the packageDefinitions defined
+        # above and set the default package to the one passed in here.
+        packages = utils.mkAllWithDefault defaultPackage;
 
-          # choose your package for devShell
-          # and add whatever else you want in it.
-          devShells = {
-            default = pkgs.mkShell {
-              name = defaultPackageName;
-              packages = [ defaultPackage ];
-              inputsFrom = [ ];
-              shellHook = '''';
-            };
+        # choose your package for devShell
+        # and add whatever else you want in it.
+        devShells = {
+          default = pkgs.mkShell {
+            name = defaultPackageName;
+            packages = with pkgs; [
+              stylua
+              nixfmt-rfc-style
+            ];
+            inputsFrom = [ ];
+            shellHook = '''';
           };
+        };
 
-        }
-      )
+      }
+    )
     // (
       let
         # we also export a nixos module to allow reconfiguration from
@@ -363,13 +364,9 @@
 
         # this will make an overlay out of each of the packageDefinitions
         # defined above and set the default overlay to the one named here.
-        overlays = utils.makeOverlays luaPath
-          {
-            inherit nixpkgs dependencyOverlays extra_pkg_config;
-          }
-          categoryDefinitions
-          packageDefinitions
-          defaultPackageName;
+        overlays = utils.makeOverlays luaPath {
+          inherit nixpkgs dependencyOverlays extra_pkg_config;
+        } categoryDefinitions packageDefinitions defaultPackageName;
 
         nixosModules.default = nixosModule;
         homeModules.default = homeModule;
