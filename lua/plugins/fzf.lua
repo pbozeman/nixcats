@@ -1,52 +1,52 @@
 -- fzf-lua: fuzzy finder
 local ok, fzf = pcall(require, "fzf-lua")
 if not ok then
-	return
+  return
 end
 
 local actions = require("fzf-lua.actions")
 
 fzf.setup({
-	"default-title",
-	fzf_colors = true,
-	fzf_opts = {
-		["--no-scrollbar"] = true,
-	},
-	defaults = {
-		formatter = "path.filename_first",
-	},
-	winopts = {
-		width = 0.8,
-		height = 0.8,
-		row = 0.5,
-		col = 0.5,
-		preview = {
-			scrollchars = { "┃", "" },
-		},
-	},
-	files = {
-		cwd_prompt = false,
-		actions = {
-			["alt-i"] = { actions.toggle_ignore },
-			["alt-h"] = { actions.toggle_hidden },
-		},
-	},
-	grep = {
-		actions = {
-			["alt-i"] = { actions.toggle_ignore },
-			["alt-h"] = { actions.toggle_hidden },
-		},
-	},
-	lsp = {
-		symbols = {
-			symbol_hl = function(s)
-				return "TroubleIcon" .. s
-			end,
-			symbol_fmt = function(s)
-				return s:lower() .. "\t"
-			end,
-		},
-	},
+  "default-title",
+  fzf_colors = true,
+  fzf_opts = {
+    ["--no-scrollbar"] = true,
+  },
+  defaults = {
+    formatter = "path.filename_first",
+  },
+  winopts = {
+    width = 0.8,
+    height = 0.8,
+    row = 0.5,
+    col = 0.5,
+    preview = {
+      scrollchars = { "┃", "" },
+    },
+  },
+  files = {
+    cwd_prompt = false,
+    actions = {
+      ["alt-i"] = { actions.toggle_ignore },
+      ["alt-h"] = { actions.toggle_hidden },
+    },
+  },
+  grep = {
+    actions = {
+      ["alt-i"] = { actions.toggle_ignore },
+      ["alt-h"] = { actions.toggle_hidden },
+    },
+  },
+  lsp = {
+    symbols = {
+      symbol_hl = function(s)
+        return "TroubleIcon" .. s
+      end,
+      symbol_fmt = function(s)
+        return s:lower() .. "\t"
+      end,
+    },
+  },
 })
 
 -- Keybindings
