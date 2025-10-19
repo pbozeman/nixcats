@@ -86,6 +86,7 @@
             nvim-treesitter.withAllGrammars
             nvim-lspconfig
             which-key-nvim
+            vim-tmux-navigator
           ];
         };
 
