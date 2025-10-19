@@ -109,6 +109,11 @@
           # this includes LSPs
           lspsAndRuntimeDeps = {
             general = with pkgs; [
+              # Fuzzy finder tools
+              fd
+              fzf
+              ripgrep
+
               # Bash
               nodePackages.bash-language-server
               shfmt
@@ -175,6 +180,7 @@
             gitPlugins = with pkgs.neovimPlugins; [ ];
             general = with pkgs.vimPlugins; [
               conform-nvim
+              fzf-lua
               neo-tree-nvim
               nvim-lspconfig
               nvim-treesitter.withAllGrammars

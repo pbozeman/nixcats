@@ -5,6 +5,7 @@ vim.g.maplocalleader = "\\"
 -- Load plugins
 require("plugins.colorscheme")
 require("plugins.which-key")
+require("plugins.fzf")
 require("plugins.lsp")
 require("plugins.conform")
 require("plugins.neo-tree")
