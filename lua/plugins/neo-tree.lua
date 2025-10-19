@@ -47,8 +47,24 @@ neo_tree.setup({
 })
 
 -- Keybindings
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorer NeoTree (Root Dir)" })
-vim.keymap.set("n", "<leader>fe", "<cmd>Neotree toggle<cr>", { desc = "Explorer NeoTree (Root Dir)" })
+local util = require("util")
+
+vim.keymap.set("n", "<leader>e", function()
+  local reveal_file = vim.fn.expand("%:p")
+  if reveal_file == "" then
+    require("neo-tree.command").execute({ toggle = true, dir = util.get_root() })
+  else
+    require("neo-tree.command").execute({ action = "focus", reveal_file = reveal_file, reveal_force_cwd = true })
+  end
+end, { desc = "Explorer NeoTree (Root Dir)" })
+vim.keymap.set("n", "<leader>fe", function()
+  local reveal_file = vim.fn.expand("%:p")
+  if reveal_file == "" then
+    require("neo-tree.command").execute({ toggle = true, dir = util.get_root() })
+  else
+    require("neo-tree.command").execute({ action = "focus", reveal_file = reveal_file, reveal_force_cwd = true })
+  end
+end, { desc = "Explorer NeoTree (Root Dir)" })
 vim.keymap.set("n", "<leader>fE", function()
   require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
 end, { desc = "Explorer NeoTree (cwd)" })
