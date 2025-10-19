@@ -85,6 +85,7 @@
           general = with pkgs.vimPlugins; [
             nvim-treesitter.withAllGrammars
             nvim-lspconfig
+            which-key-nvim
           ];
         };
 

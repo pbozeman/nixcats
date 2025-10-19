@@ -142,3 +142,5 @@ local exampleData = nixCats('example.toThisSet')
 - `allowUnfree = true` is set in `extra_pkg_config` (flake.nix:42)
 - The default package name is `nvim` (flake.nix:180) - this affects module namespaces and output names
 - Neovim nightly overlay is available but commented out (flake.nix:13-15, 157)
+- **Files must be tracked by git** to be included in the Nix build (use `git add` before `nix run`)
+- When adding plugins that use leader key groups, add corresponding which-key group definitions to `lua/plugins/which-key.lua` spec (e.g., if adding git plugins, add `{ "<leader>g", group = "git" }`)
