@@ -26,11 +26,10 @@
 
   # see :help nixCats.flake.outputs
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixCats,
-      ...
+    { self
+    , nixpkgs
+    , nixCats
+    , ...
     }@inputs:
     let
       inherit (nixCats) utils;
@@ -57,7 +56,22 @@
           # Once we add this overlay to our nixpkgs, we are able to
           # use `pkgs.neovimPlugins`, which is a set of our plugins.
           (utils.standardPluginOverlay inputs)
-          # add any other flake overlays here.
+
+          # Override neo-tree-nvim with latest version from GitHub
+          # to fix manual close issue:
+          # https://github.com/nvim-neo-tree/neo-tree.nvim/issues/1415
+          (final: prev: {
+            vimPlugins = prev.vimPlugins // {
+              neo-tree-nvim = prev.vimPlugins.neo-tree-nvim.overrideAttrs (old: {
+                src = final.fetchFromGitHub {
+                  owner = "nvim-neo-tree";
+                  repo = "neo-tree.nvim";
+                  rev = "20244beec28b9d79ffb75fe1b1606f4dd8d476fc";
+                  hash = "sha256-Y5onzNckqFpVjglFtngrz6NhhiGvR+CbLzT8W+YnQ7Q=";
+                };
+              });
+            };
+          })
 
           # when other people mess up their overlays by wrapping them with
           # system, you may instead call this function on their overlay. it will
@@ -72,14 +86,13 @@
       # and
       # :help nixCats.flake.outputs.categoryDefinitions.scheme
       categoryDefinitions =
-        {
-          pkgs,
-          settings,
-          categories,
-          extra,
-          name,
-          mkPlugin,
-          ...
+        { pkgs
+        , settings
+        , categories
+        , extra
+        , name
+        , mkPlugin
+        , ...
         }@packageDef:
         {
           # to define and use a new category, simply add a new list to a set
@@ -272,44 +285,48 @@
     in
 
     # see :help nixCats.flake.outputs.exports
-    forEachSystem (
-      system:
-      let
-        nixCatsBuilder = utils.baseBuilder luaPath {
-          inherit
-            nixpkgs
-            system
-            dependencyOverlays
-            extra_pkg_config
-            ;
-        } categoryDefinitions packageDefinitions;
-        defaultPackage = nixCatsBuilder defaultPackageName;
+    forEachSystem
+      (
+        system:
+        let
+          nixCatsBuilder = utils.baseBuilder luaPath
+            {
+              inherit
+                nixpkgs
+                system
+                dependencyOverlays
+                extra_pkg_config
+                ;
+            }
+            categoryDefinitions
+            packageDefinitions;
+          defaultPackage = nixCatsBuilder defaultPackageName;
 
-        # this is just for using utils such as pkgs.mkShell
-        # The one used to build neovim is resolved inside the builder
-        # and is passed to our categoryDefinitions and packageDefinitions
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        # these outputs will be wrapped with ${system} by utils.eachSystem
+          # this is just for using utils such as pkgs.mkShell
+          # The one used to build neovim is resolved inside the builder
+          # and is passed to our categoryDefinitions and packageDefinitions
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          # these outputs will be wrapped with ${system} by utils.eachSystem
 
-        # this will make a package out of each of the packageDefinitions defined
-        # above and set the default package to the one passed in here.
-        packages = utils.mkAllWithDefault defaultPackage;
+          # this will make a package out of each of the packageDefinitions defined
+          # above and set the default package to the one passed in here.
+          packages = utils.mkAllWithDefault defaultPackage;
 
-        # choose your package for devShell
-        # and add whatever else you want in it.
-        devShells = {
-          default = pkgs.mkShell {
-            name = defaultPackageName;
-            packages = [ defaultPackage ];
-            inputsFrom = [ ];
-            shellHook = '''';
+          # choose your package for devShell
+          # and add whatever else you want in it.
+          devShells = {
+            default = pkgs.mkShell {
+              name = defaultPackageName;
+              packages = [ defaultPackage ];
+              inputsFrom = [ ];
+              shellHook = '''';
+            };
           };
-        };
 
-      }
-    )
+        }
+      )
     // (
       let
         # we also export a nixos module to allow reconfiguration from
@@ -346,9 +363,13 @@
 
         # this will make an overlay out of each of the packageDefinitions
         # defined above and set the default overlay to the one named here.
-        overlays = utils.makeOverlays luaPath {
-          inherit nixpkgs dependencyOverlays extra_pkg_config;
-        } categoryDefinitions packageDefinitions defaultPackageName;
+        overlays = utils.makeOverlays luaPath
+          {
+            inherit nixpkgs dependencyOverlays extra_pkg_config;
+          }
+          categoryDefinitions
+          packageDefinitions
+          defaultPackageName;
 
         nixosModules.default = nixosModule;
         homeModules.default = homeModule;
