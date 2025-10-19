@@ -162,6 +162,7 @@
               conform-nvim
               nvim-treesitter.withAllGrammars
               nvim-lspconfig
+              tint-nvim
               tokyonight-nvim
               which-key-nvim
               vim-tmux-navigator
