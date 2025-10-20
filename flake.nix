@@ -181,6 +181,7 @@
             general = with pkgs.vimPlugins; [
               conform-nvim
               fzf-lua
+              gitsigns-nvim
               neo-tree-nvim
               nvim-lspconfig
               nvim-treesitter.withAllGrammars
