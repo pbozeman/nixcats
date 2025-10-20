@@ -14,24 +14,79 @@ tint.setup({
   tint_background_colors = false,
   -- Don't tint number column highlight groups
   highlight_ignore_patterns = { "^LineNr$" },
-  -- Don't tint neo-tree
-  window_ignore_function = function(winid)
-    local bufid = vim.api.nvim_win_get_buf(winid)
-    local filetype = vim.api.nvim_buf_get_option(bufid, "filetype")
-    return filetype == "neo-tree"
+  -- Disable tint's automatic behavior by ignoring all windows
+  window_ignore_function = function()
+    return true
   end,
 })
 
--- Tint all windows when Neovim loses focus
+-- Track the last window we left
+local last_win = nil
+
+vim.api.nvim_create_autocmd("WinLeave", {
+  callback = function()
+    last_win = vim.api.nvim_get_current_win()
+  end,
+})
+
+-- Manually control tinting with our own WinEnter
+vim.api.nvim_create_autocmd("WinEnter", {
+  callback = function()
+    local current_win = vim.api.nvim_get_current_win()
+    local current_buf = vim.api.nvim_win_get_buf(current_win)
+    local current_filetype = vim.bo[current_buf].filetype
+
+    -- When entering neo-tree, untint the window we left
+    if current_filetype == "neo-tree" then
+      if last_win and vim.api.nvim_win_is_valid(last_win) then
+        tint.untint(last_win)
+      end
+      return
+    end
+
+    -- Tint all windows except current and neo-tree
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local filetype = vim.bo[buf].filetype
+
+      if win == current_win then
+        tint.untint(win)
+      elseif filetype ~= "neo-tree" then
+        tint.tint(win)
+      end
+    end
+  end,
+})
+
+-- Tint all windows when losing focus
 vim.api.nvim_create_autocmd("FocusLost", {
   callback = function()
-    tint.tint(vim.api.nvim_get_current_win())
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local filetype = vim.bo[buf].filetype
+      if filetype ~= "neo-tree" then
+        tint.tint(win)
+      end
+    end
   end,
 })
 
--- Untint current window when Neovim gains focus
+-- Untint current window when gaining focus
 vim.api.nvim_create_autocmd("FocusGained", {
   callback = function()
-    tint.untint(vim.api.nvim_get_current_win())
+    local current_win = vim.api.nvim_get_current_win()
+    local current_buf = vim.api.nvim_win_get_buf(current_win)
+    local current_filetype = vim.bo[current_buf].filetype
+
+    -- If not in neo-tree untint the current window
+    if current_filetype ~= "neo-tree" then
+      tint.untint(current_win)
+      return
+    end
+
+    -- If in neo-tree, untint the last window instead
+    if last_win and vim.api.nvim_win_is_valid(last_win) then
+      tint.untint(last_win)
+    end
   end,
 })
