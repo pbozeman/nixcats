@@ -1,6 +1,4 @@
 -- neovim configuration
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 
 -- Make :q behave like :qa (quit all)
 vim.cmd([[
@@ -8,6 +6,8 @@ vim.cmd([[
 ]])
 
 -- Load config
+require("config.options")
+require("config.autocmds")
 require("config.commands")
 
 -- Load plugins
