@@ -5,7 +5,19 @@ if not ok then
 end
 
 wk.setup({
-  preset = "helix",
+  preset = "classic",
+  win = {
+    border = "none",
+    width = math.huge, -- full width like LazyVim
+    height = { max = 25, min = 4 }, -- limit height to spread horizontally first
+    col = 0, -- centered
+    title_pos = "center",
+    padding = { 1, 2 },
+  },
+  layout = {
+    width = { min = 20 },
+    spacing = 3,
+  },
   spec = {
     {
       mode = { "n", "v" },
