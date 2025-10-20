@@ -4,11 +4,38 @@ if not ok then
   return
 end
 
+-- Get icons from centralized config
+local icons = require("config.icons").icons
+
 neo_tree.setup({
   close_if_last_window = false,
   popup_border_style = "rounded",
   enable_git_status = true,
   enable_diagnostics = true,
+
+  default_component_configs = {
+    diagnostics = {
+      symbols = {
+        hint = icons.diagnostics.Hint,
+        info = icons.diagnostics.Info,
+        warn = icons.diagnostics.Warn,
+        error = icons.diagnostics.Error,
+      },
+    },
+    git_status = {
+      symbols = {
+        added = icons.git.added,
+        modified = icons.git.modified,
+        deleted = icons.git.removed,
+        renamed = icons.git.modified,
+        untracked = "?",
+        ignored = "",
+        unstaged = "",
+        staged = "",
+        conflict = "",
+      },
+    },
+  },
 
   window = {
     position = "left",

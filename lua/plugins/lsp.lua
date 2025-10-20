@@ -1,12 +1,8 @@
 -- LSP Configuration
 
--- Diagnostic icons (using Nerd Font icons)
-local signs = {
-  Error = "󰅚 ",
-  Warn = "󰀪 ",
-  Hint = "󰌶 ",
-  Info = " ",
-}
+-- Get diagnostic icons from centralized config
+local icons = require("config.icons").icons
+local signs = icons.diagnostics
 
 -- Configure diagnostics (based on LazyVim)
 vim.diagnostic.config({
