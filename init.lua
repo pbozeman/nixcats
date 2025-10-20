@@ -1,6 +1,11 @@
--- nixCats neovim configuration
+-- neovim configuration
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+-- Make :q behave like :qa (quit all)
+vim.cmd([[
+  cnoreabbrev <expr> q getcmdtype() == ":" && getcmdline() == "q" ? "qa" : "q"
+]])
 
 -- Load plugins
 require("plugins.colorscheme")
