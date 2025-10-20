@@ -7,6 +7,9 @@ vim.cmd([[
   cnoreabbrev <expr> q getcmdtype() == ":" && getcmdline() == "q" ? "qa" : "q"
 ]])
 
+-- Load config
+require("config.commands")
+
 -- Load plugins
 require("plugins.colorscheme")
 require("plugins.which-key")
