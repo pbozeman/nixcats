@@ -12,6 +12,8 @@ tint.setup({
   transforms = require("tint").transforms.SATURATE_TINT,
   -- Tint background portions of highlight groups
   tint_background_colors = false,
+  -- Don't tint number column highlight groups
+  highlight_ignore_patterns = { "^LineNr$" },
   -- Don't tint neo-tree
   window_ignore_function = function(winid)
     local bufid = vim.api.nvim_win_get_buf(winid)
