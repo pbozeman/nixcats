@@ -186,6 +186,7 @@
               nvim-lspconfig
               nvim-treesitter.withAllGrammars
               nvim-web-devicons
+              smartyank-nvim
               tint-nvim
               tokyonight-nvim
               vim-tmux-navigator
