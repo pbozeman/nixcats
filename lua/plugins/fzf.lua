@@ -23,6 +23,15 @@ fzf.setup({
     preview = {
       scrollchars = { "┃", "" },
     },
+    on_create = function()
+      vim.api.nvim_create_autocmd("FocusLost", {
+        buffer = 0,
+        once = true,
+        callback = function()
+          vim.api.nvim_input("<Esc>")
+        end,
+      })
+    end,
   },
   files = {
     cwd_prompt = false,
