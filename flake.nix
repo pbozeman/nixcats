@@ -190,6 +190,7 @@
               smartyank-nvim
               tint-nvim
               tokyonight-nvim
+              trouble-nvim
               vim-tmux-navigator
               which-key-nvim
             ];

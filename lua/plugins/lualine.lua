@@ -6,7 +6,7 @@ end
 
 local icons = require("config.icons").icons
 
-lualine.setup({
+local opts = {
   options = {
     theme = "auto",
     globalstatus = true,
@@ -45,4 +45,27 @@ lualine.setup({
     lualine_z = {},
   },
   extensions = { "neo-tree", "fzf" },
-})
+}
+
+-- Add trouble symbols to lualine if enabled
+if vim.g.trouble_lualine then
+  local ok_trouble, trouble = pcall(require, "trouble")
+  if ok_trouble then
+    local symbols = trouble.statusline({
+      mode = "symbols",
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = "{kind_icon}{symbol.name:Normal}",
+      hl_group = "lualine_c_normal",
+    })
+    table.insert(opts.sections.lualine_c, {
+      symbols and symbols.get,
+      cond = function()
+        return vim.b.trouble_lualine ~= false and symbols.has()
+      end,
+    })
+  end
+end
+
+lualine.setup(opts)

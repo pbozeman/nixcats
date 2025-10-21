@@ -14,6 +14,7 @@ require("config.keymaps")
 -- Load plugins
 require("plugins.colorscheme")
 require("plugins.which-key")
+require("plugins.trouble")
 require("plugins.lualine")
 require("plugins.fzf")
 require("plugins.gitsigns")
