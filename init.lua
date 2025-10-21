@@ -13,6 +13,7 @@ require("config.commands")
 -- Load plugins
 require("plugins.colorscheme")
 require("plugins.which-key")
+require("plugins.lualine")
 require("plugins.fzf")
 require("plugins.gitsigns")
 require("plugins.lsp")
