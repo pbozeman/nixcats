@@ -21,12 +21,17 @@ trouble.setup({
 -- Keymaps
 local map = vim.keymap.set
 
-map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
-map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
-map("n", "<leader>cs", "<cmd>Trouble symbols toggle<cr>", { desc = "Symbols (Trouble)" })
-map("n", "<leader>cS", "<cmd>Trouble lsp toggle<cr>", { desc = "LSP references/definitions/... (Trouble)" })
-map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
-map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
+map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle focus=true<cr>", { desc = "Diagnostics (Trouble)" })
+map(
+  "n",
+  "<leader>xX",
+  "<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>",
+  { desc = "Buffer Diagnostics (Trouble)" }
+)
+map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=true<cr>", { desc = "Symbols (Trouble)" })
+map("n", "<leader>cS", "<cmd>Trouble lsp toggle focus=true<cr>", { desc = "LSP references/definitions/... (Trouble)" })
+map("n", "<leader>xL", "<cmd>Trouble loclist toggle focus=true<cr>", { desc = "Location List (Trouble)" })
+map("n", "<leader>xQ", "<cmd>Trouble qflist toggle focus=true<cr>", { desc = "Quickfix List (Trouble)" })
 
 -- Navigate trouble items (or fallback to quickfix)
 map("n", "[q", function()

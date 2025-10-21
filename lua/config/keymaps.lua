@@ -14,3 +14,13 @@ vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
   end)
   return "<esc>"
 end, { expr = true, desc = "Escape and Clear hlsearch" })
+
+-- Quickfix list
+vim.keymap.set("n", "<leader>xq", function()
+  local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
+  if qf_winid ~= 0 then
+    vim.cmd.cclose()
+  else
+    vim.cmd.copen()
+  end
+end, { desc = "Quickfix List" })
