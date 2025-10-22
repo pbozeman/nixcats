@@ -183,6 +183,7 @@
               fzf-lua
               gitsigns-nvim
               lualine-nvim
+              marks-nvim
               neo-tree-nvim
               nvim-lspconfig
               nvim-treesitter.withAllGrammars
