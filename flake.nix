@@ -199,6 +199,7 @@
               trouble-nvim
               vim-tmux-navigator
               which-key-nvim
+              yanky-nvim
             ];
           };
 
