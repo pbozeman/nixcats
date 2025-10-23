@@ -182,8 +182,10 @@
               conform-nvim
               fzf-lua
               gitsigns-nvim
+              indent-blankline-nvim
               lualine-nvim
               marks-nvim
+              mini-nvim
               neo-tree-nvim
               nvim-lspconfig
               nvim-treesitter.withAllGrammars
