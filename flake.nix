@@ -183,7 +183,6 @@
             gitPlugins = with pkgs.neovimPlugins; [ ];
             general = with pkgs.vimPlugins; [
               conform-nvim
-              fzf-lua
               gitsigns-nvim
               indent-blankline-nvim
               lualine-nvim
@@ -194,6 +193,7 @@
               nvim-treesitter.withAllGrammars
               nvim-web-devicons
               smartyank-nvim
+              snacks-nvim
               tint-nvim
               tokyonight-nvim
               trouble-nvim
