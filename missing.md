@@ -42,33 +42,33 @@ Missing entire debugging setup:
 **Status**: ⚠️ Partially different
 
 - ❌ `telescope.nvim` + `telescope-fzf-native-nvim` (you're using fzf-lua instead)
-- ❌ `marks.nvim` - Better mark visualization
+- ✅ `marks.nvim` - Better mark visualization (present)
 - ❌ `flash.nvim` - Jump to any location
 - ❌ `oil-nvim` - File manager
 
 ### 5. UI Enhancements
 
-**Status**: ❌ Missing
+**Status**: ⚠️ Partially missing
 
-- `noice.nvim` - Better cmd/message UI
-- `indent-blankline-nvim` - Indentation guides
-- `dressing.nvim` - Better vim.ui interfaces
-- `todo-comments.nvim` - Highlight TODO/FIXME
-- `vim-illuminate` - Highlight word under cursor
-- `persistence.nvim` - Session management
+- ✅ `indent-blankline-nvim` - Indentation guides (present)
+- ❌ `noice.nvim` - Better cmd/message UI
+- ❌ `dressing.nvim` - Better vim.ui interfaces
+- ❌ `todo-comments.nvim` - Highlight TODO/FIXME
+- ❌ `vim-illuminate` - Highlight word under cursor
+- ❌ `persistence.nvim` - Session management
 
 ### 6. Mini.nvim Modules
 
-**Status**: ❌ Missing
+**Status**: ⚠️ Partially missing
 
 Your old config had several mini.nvim modules:
 
-- `mini.ai` - Text objects
-- `mini.bufremove` - Better buffer deletion
-- `mini.comment` - Commenting
-- `mini.indentscope` - Scope indicator
-- `mini.pairs` - Auto pairs (disabled in old config)
-- `mini.surround` - Surround operations
+- ✅ `mini.indentscope` - Scope indicator (present)
+- ❌ `mini.ai` - Text objects
+- ❌ `mini.bufremove` - Better buffer deletion
+- ❌ `mini.comment` - Commenting
+- ❌ `mini.pairs` - Auto pairs (disabled in old config)
+- ❌ `mini.surround` - Surround operations
 
 ### 7. Specialized File Types
 
@@ -277,6 +277,6 @@ High priority (core functionality):
 3. **Spell checking** (options)
 4. **Mini.nvim modules** (comment, surround, ai)
 
-Medium priority (quality of life): 5. **C++ development tools** (cmake-tools, overseer) 6. **LSP enhancements** (lazydev, inlay hints) 7. **UI improvements** (todo-comments, indent-blankline) 8. **Missing autocmds** (verilog, java)
+Medium priority (quality of life): 5. **C++ development tools** (cmake-tools, overseer) 6. **LSP enhancements** (lazydev, inlay hints) 7. **UI improvements** (todo-comments, dressing) 8. **Missing autocmds** (verilog, java)
 
 Low priority (nice to have): 9. **Debugging setup** (nvim-dap) 10. **Specialized file types** (neorg, plantuml) 11. **Additional tools** (yanky, persistence)
