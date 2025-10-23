@@ -64,11 +64,11 @@ Missing entire debugging setup:
 Your old config had several mini.nvim modules:
 
 - ✅ `mini.indentscope` - Scope indicator (present)
+- ✅ `mini.surround` - Surround operations (present)
 - ❌ `mini.ai` - Text objects
 - ❌ `mini.bufremove` - Better buffer deletion
 - ❌ `mini.comment` - Commenting
 - ❌ `mini.pairs` - Auto pairs (disabled in old config)
-- ❌ `mini.surround` - Surround operations
 
 ### 7. Specialized File Types
 
@@ -275,7 +275,7 @@ High priority (core functionality):
 1. **Completion system** (nvim-cmp + sources)
 2. **Buffer navigation keymaps** (tab/shift-tab)
 3. **Spell checking** (options)
-4. **Mini.nvim modules** (comment, surround, ai)
+4. **Mini.nvim modules** (comment, ai)
 
 Medium priority (quality of life): 5. **C++ development tools** (cmake-tools, overseer) 6. **LSP enhancements** (lazydev, inlay hints) 7. **UI improvements** (todo-comments, dressing) 8. **Missing autocmds** (verilog, java)
 
