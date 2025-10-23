@@ -160,6 +160,9 @@
               rust-analyzer
               rustfmt
 
+              # TeX/LaTeX
+              tex-fmt
+
               # TOML
               taplo
 

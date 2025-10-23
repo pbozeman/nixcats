@@ -45,6 +45,10 @@ conform.setup({
     -- Rust
     rust = { "rustfmt" },
 
+    -- TeX/LaTeX
+    tex = { "tex_fmt" },
+    latex = { "tex_fmt" },
+
     -- TOML
     toml = { "taplo" },
 
@@ -81,6 +85,11 @@ conform.setup({
         end
         return {}
       end,
+    },
+    tex_fmt = {
+      command = "tex-fmt",
+      args = { "--stdin" },
+      stdin = true,
     },
   },
 })

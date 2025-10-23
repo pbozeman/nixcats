@@ -90,7 +90,7 @@ From `/home/pbozeman/src/lazyvim-nix/config/lua/plugins/plantuml.lua`:
 
 #### LaTeX
 
-- Missing `tex-fmt` formatter configuration
+- ✅ `tex-fmt` formatter configuration (present)
 
 ### 8. Git Integration
 
@@ -208,7 +208,6 @@ vim.api.nvim_create_autocmd("FileType", {
 Missing from your conform setup in `/home/pbozeman/src/nixcats/lua/plugins/conform.lua`:
 
 - `jq` for JSON formatting (you currently use prettier)
-- `tex-fmt` for LaTeX
 - `doxyformat` for C++ (conditional on directory):
 
   ```lua
@@ -235,7 +234,6 @@ Missing from your conform setup in `/home/pbozeman/src/nixcats/lua/plugins/confo
 Missing tools in flake.nix that were in old `runtime.nix`:
 
 - `jq` (JSON tool)
-- `tex-fmt` (LaTeX formatter)
 - `lazygit` (Git TUI)
 - Custom `codelldb` wrapper for debugging
 
