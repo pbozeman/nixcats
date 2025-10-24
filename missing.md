@@ -2,20 +2,47 @@
 
 Comparison between the old lazyvim-nix configuration and the current nixcats setup.
 
-## Major Missing Features
+**Last Updated**: 2025-10-24
+
+## Overall Progress
+
+**~75% Complete** - Most core functionality is now configured!
+
+✅ **Fully Configured** (100%):
+- Completion (blink.cmp)
+- Navigation & Search (snacks picker with frecency)
+- Treesitter (with textobjects, ts-comments)
+
+✅ **Mostly Configured** (70-90%):
+- UI Enhancements (todo-comments, trouble, which-key, tint, ui-toggles)
+- Git Integration (gitsigns, yanky, smartyank, snacks git pickers)
+- LSP (basic setup, inlay hints toggle, conform formatting)
+- Mini.nvim modules (ai, surround, indentscope)
+
+⚠️ **Partially Configured** (40-60%):
+- Keymaps (many via plugins, some custom ones missing)
+- Options (core settings, some missing)
+- Language-specific features (formatters/LSPs present, specialized tools missing)
+
+❌ **Missing** (0%):
+- Debugging (nvim-dap)
+- C++ Development Tools (cmake-tools, overseer)
+- Specialized file types (neorg, plantuml)
+- Some autocmds (verilog auto-format, java settings)
+
+## Major Features Status
 
 ### 1. Completion System
 
-**Status**: ❌ Not configured at all
+**Status**: ✅ **CONFIGURED** (Using blink.cmp instead of nvim-cmp)
 
-Your old config had a full completion setup with:
+Your current nixcats has:
+- `blink-cmp` (modern completion engine - faster than nvim-cmp)
+- `friendly-snippets` (snippet collection)
+- Auto-completion disabled by default, toggle with `<leader>ua`
+- Configured in `lua/plugins/blink.lua`
 
-- `nvim-cmp` (completion engine)
-- `cmp-buffer`, `cmp-nvim-lsp`, `cmp-path`, `cmp_luasnip` (sources)
-- `LuaSnip` + `friendly-snippets`
-- `nvim-snippets`
-
-Your current nixcats has **no completion** configured.
+**Note**: Switched from nvim-cmp to blink.cmp (better performance)
 
 ### 2. C++ Development Tools
 
@@ -39,36 +66,41 @@ Missing entire debugging setup:
 
 ### 4. Navigation & Search
 
-**Status**: ⚠️ Partially different
+**Status**: ✅ **CONFIGURED** (Using snacks.nvim picker)
 
-- ❌ `telescope.nvim` + `telescope-fzf-native-nvim` (you're using fzf-lua instead)
+- ✅ `snacks.nvim` - Modern file picker with frecency sorting (configured in `lua/plugins/snacks.lua`)
 - ✅ `marks.nvim` - Better mark visualization (present)
-- ❌ `flash.nvim` - Jump to any location
-- ❌ `oil-nvim` - File manager
+- ✅ `neo-tree.nvim` - File explorer (replaces oil-nvim)
+- ❌ `flash.nvim` - Jump to any location (missing)
+
+**Note**: Using snacks picker instead of telescope/fzf-lua. Frecency enabled for smart file sorting.
 
 ### 5. UI Enhancements
 
-**Status**: ⚠️ Partially missing
+**Status**: ⚠️ Partially configured
 
-- ✅ `indent-blankline-nvim` - Indentation guides (present)
-- ❌ `noice.nvim` - Better cmd/message UI
-- ❌ `dressing.nvim` - Better vim.ui interfaces
-- ❌ `todo-comments.nvim` - Highlight TODO/FIXME
-- ❌ `vim-illuminate` - Highlight word under cursor
-- ❌ `persistence.nvim` - Session management
+- ✅ `indent-blankline-nvim` - Indentation guides (configured)
+- ✅ `todo-comments.nvim` - Highlight TODO/FIXME (configured in `lua/plugins/todo-comments.lua`)
+- ✅ `trouble.nvim` - Better diagnostics/quickfix UI (configured)
+- ✅ `which-key.nvim` - Keybinding hints (configured)
+- ✅ `tint-nvim` - Dim inactive windows (configured)
+- ✅ UI toggles - Diagnostic, line numbers, spell, wrap, etc. (in `lua/plugins/ui-toggles.lua`)
+- ❌ `noice.nvim` - Better cmd/message UI (missing)
+- ❌ `dressing.nvim` - Better vim.ui interfaces (missing)
+- ❌ `vim-illuminate` - Highlight word under cursor (missing)
+- ❌ `persistence.nvim` - Session management (missing)
 
 ### 6. Mini.nvim Modules
 
-**Status**: ⚠️ Partially missing
+**Status**: ✅ **MOSTLY CONFIGURED**
 
-Your old config had several mini.nvim modules:
-
-- ✅ `mini.indentscope` - Scope indicator (present)
-- ✅ `mini.surround` - Surround operations (present)
-- ❌ `mini.ai` - Text objects
-- ❌ `mini.bufremove` - Better buffer deletion
-- ❌ `mini.comment` - Commenting
-- ❌ `mini.pairs` - Auto pairs (disabled in old config)
+Your current config has:
+- ✅ `mini.indentscope` - Scope indicator (configured in `lua/plugins/mini-indentscope.lua`)
+- ✅ `mini.surround` - Surround operations (configured in `lua/plugins/mini-surround.lua`)
+- ✅ `mini.ai` - Text objects (configured in `lua/plugins/mini-ai.lua`)
+- ❌ `mini.bufremove` - Better buffer deletion (missing)
+- ❌ `mini.comment` - Commenting (missing - using ts-comments instead)
+- ❌ `mini.pairs` - Auto pairs (missing, was disabled in old config anyway)
 
 ### 7. Specialized File Types
 
@@ -94,31 +126,38 @@ From `/home/pbozeman/src/lazyvim-nix/config/lua/plugins/plantuml.lua`:
 
 ### 8. Git Integration
 
-**Status**: ✅ gitsigns present, ❌ others missing
+**Status**: ✅ **CONFIGURED**
 
-- ✅ `gitsigns.nvim` (present)
-- ❌ `yanky.nvim` - Better yank/paste ring
-- ❌ `lazygit` in runtime dependencies
+- ✅ `gitsigns.nvim` - Git signs in gutter (configured in `lua/plugins/gitsigns.lua`)
+- ✅ `yanky.nvim` - Better yank/paste ring (configured in `lua/plugins/yanky.lua`)
+- ✅ `smartyank.nvim` - OSC52 clipboard sync (configured in `lua/plugins/smartyank.lua`)
+- ✅ Git pickers in snacks - git_status, git_files, git_log
+- ❌ `lazygit` in runtime dependencies (missing)
 
 ### 9. LSP Enhancements
 
-**Status**: ⚠️ Partially missing
+**Status**: ⚠️ Partially configured
 
-- ❌ `lazydev-nvim` / `neodev-nvim` - Better Lua LSP for Neovim config
-- ❌ `neoconf-nvim` - Project-local LSP settings
-- ❌ `rust-tools.nvim` - Enhanced Rust support
-- ❌ `crates-nvim` - Cargo.toml helper
-- ❌ Inlay hints toggle (from `/home/pbozeman/src/lazyvim-nix/config/lua/plugins/hints.lua:18-24`)
+- ✅ LSP basic configuration (configured in `lua/plugins/lsp.lua`)
+- ✅ Inlay hints toggle - `<leader>uh` (in `lua/plugins/ui-toggles.lua`)
+- ✅ `conform.nvim` - Formatting (configured)
+- ❌ `lazydev-nvim` / `neodev-nvim` - Better Lua LSP for Neovim config (missing)
+- ❌ `neoconf-nvim` - Project-local LSP settings (missing)
+- ❌ `rust-tools.nvim` - Enhanced Rust support (missing)
+- ❌ `crates-nvim` - Cargo.toml helper (missing)
 
 ### 10. Treesitter Extras
 
-**Status**: ⚠️ Basic treesitter present, extras missing
+**Status**: ✅ **CONFIGURED**
 
-- ✅ `nvim-treesitter.withAllGrammars` (present)
-- ❌ `nvim-treesitter-context` - Show context at top
-- ❌ `nvim-treesitter-textobjects` - Text object selection
-- ❌ `nvim-ts-autotag` - Auto-close HTML tags
-- ❌ `ts-comments-nvim` - Better comment detection
+- ✅ `nvim-treesitter.withAllGrammars` - All parsers (configured in `lua/plugins/treesitter.lua`)
+- ✅ `nvim-treesitter-textobjects` - Text object selection (in flake.nix)
+- ✅ `ts-comments-nvim` - Better comment detection (configured in `lua/plugins/ts-comments.lua`)
+- ✅ SystemVerilog syntax highlighting fixed (maps to verilog queries)
+- ✅ Folding via treesitter enabled
+- ✅ Incremental selection configured
+- ❌ `nvim-treesitter-context` - Show context at top (missing)
+- ❌ `nvim-ts-autotag` - Auto-close HTML tags (missing)
 
 ### 11. Other Plugins
 
@@ -256,24 +295,46 @@ Some plugins are declared in `/home/pbozeman/src/nixcats/flake.nix` but don't ha
 
 ## Summary Statistics
 
-- **Completion**: 0% (not configured)
-- **LSP**: ~70% (basic setup, missing enhancements)
-- **UI Plugins**: ~30% (basic plugins, missing many enhancements)
-- **Language-specific**: ~40% (C/C++ missing tools, Rust/Nix basic)
-- **Debugging**: 0% (not configured)
-- **Keymaps**: ~20% (basic only)
-- **Options**: ~60% (core settings present)
-- **Autocmds**: ~30% (missing language-specific)
+- **Completion**: ✅ 100% (blink.cmp configured with snippets)
+- **LSP**: ✅ 80% (configured, missing some enhancements)
+- **UI Plugins**: ✅ 70% (todo-comments, trouble, which-key, tint, ui-toggles configured)
+- **Treesitter**: ✅ 90% (configured with textobjects and ts-comments)
+- **Navigation**: ✅ 100% (snacks picker with frecency, neo-tree, marks)
+- **Git Integration**: ✅ 80% (gitsigns, yanky, smartyank, git pickers)
+- **Mini.nvim**: ✅ 75% (ai, surround, indentscope configured)
+- **Language-specific**: ⚠️ 40% (C/C++ missing tools, Rust/Nix basic)
+- **Debugging**: ❌ 0% (not configured)
+- **Keymaps**: ⚠️ 60% (many configured via plugins)
+- **Options**: ⚠️ 60% (core settings present)
+- **Autocmds**: ⚠️ 30% (missing language-specific)
+
+## Recent Additions (Last Session)
+
+- ✅ `todo-comments.nvim` - Configured with snacks picker integration
+- ✅ `snacks.nvim` picker - Frecency sorting enabled (cwd_bonus, history_bonus)
+- ✅ SystemVerilog highlighting - Fixed in preview windows
+- ✅ `yanky.nvim` - Yank ring with snacks picker
+- ✅ `ui-toggles.lua` - Toggle diagnostics, line numbers, spell, wrap, inlay hints, conceal, auto-completion
 
 ## Priority Recommendations
 
 High priority (core functionality):
 
-1. **Completion system** (nvim-cmp + sources)
-2. **Buffer navigation keymaps** (tab/shift-tab)
-3. **Spell checking** (options)
-4. **Mini.nvim modules** (comment, ai)
+1. ~~**Completion system**~~ ✅ DONE (blink.cmp configured)
+2. **Buffer navigation keymaps** (tab/shift-tab) - Still missing
+3. **Spell checking** (options) - Toggle available via `<leader>us`, but not enabled by default
+4. ~~**Mini.nvim modules**~~ ✅ MOSTLY DONE (ai, surround, indentscope configured)
 
-Medium priority (quality of life): 5. **C++ development tools** (cmake-tools, overseer) 6. **LSP enhancements** (lazydev, inlay hints) 7. **UI improvements** (todo-comments, dressing) 8. **Missing autocmds** (verilog, java)
+Medium priority (quality of life):
 
-Low priority (nice to have): 9. **Debugging setup** (nvim-dap) 10. **Specialized file types** (neorg, plantuml) 11. **Additional tools** (yanky, persistence)
+5. **C++ development tools** (cmake-tools, overseer) - Still missing
+6. **LSP enhancements** (lazydev, inlay hints toggle) - Inlay hints toggle exists in ui-toggles
+7. ~~**UI improvements**~~ ✅ MOSTLY DONE (todo-comments, trouble, tint configured)
+8. **Missing autocmds** (verilog auto-format, java settings) - Still missing
+
+Low priority (nice to have):
+
+9. **Debugging setup** (nvim-dap) - Still missing
+10. **Specialized file types** (neorg, plantuml) - Still missing
+11. ~~**Yanky**~~ ✅ DONE
+12. **Additional UI** (dressing, noice, persistence) - Still missing
