@@ -197,6 +197,7 @@
               smartyank-nvim
               snacks-nvim
               tint-nvim
+              todo-comments-nvim
               tokyonight-nvim
               trouble-nvim
               ts-comments-nvim

@@ -20,6 +20,7 @@ require("plugins.ts-comments") -- Depends on treesitter
 require("plugins.colorscheme")
 require("plugins.which-key")
 require("plugins.trouble")
+require("plugins.todo-comments")
 require("plugins.lualine")
 require("plugins.snacks")
 require("plugins.gitsigns")
