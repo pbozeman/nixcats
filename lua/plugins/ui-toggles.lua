@@ -69,7 +69,7 @@ Snacks.toggle({
 
 -- Toggle conceallevel
 Snacks.toggle({
-  name = "Conceal",
+  name = "Conceal Level",
   get = function()
     return vim.opt.conceallevel:get() > 0
   end,

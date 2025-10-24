@@ -25,3 +25,6 @@ opt.shiftwidth = 2 -- Size of an indent
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.smartindent = true -- Insert indents automatically
 opt.shiftround = true -- Round indent
+
+-- Concealment
+opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions

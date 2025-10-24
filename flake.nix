@@ -197,6 +197,7 @@
               nvim-treesitter-textobjects
               nvim-ts-autotag
               nvim-web-devicons
+              render-markdown-nvim
               smartyank-nvim
               snacks-nvim
               tint-nvim
