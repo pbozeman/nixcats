@@ -63,3 +63,11 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.conceallevel = 0
   end,
 })
+-- Disable conceallevel for quarto files
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("quarto_conceal"),
+  pattern = { "quarto" },
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+})

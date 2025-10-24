@@ -2,6 +2,7 @@
 -- Based on LazyVim's extras/lang/markdown.lua
 
 require("render-markdown").setup({
+  file_types = { "markdown" }, -- Only enable for .md, not .qmd
   code = {
     sign = false,
     width = "block",
