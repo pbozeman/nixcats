@@ -69,7 +69,10 @@ local lsp_servers = {
         runtime = { version = "LuaJIT" },
         workspace = {
           checkThirdParty = false,
-          library = { vim.env.VIMRUNTIME },
+          library = {
+            vim.env.VIMRUNTIME,
+            "${3rd}/luv/library",
+          },
         },
         telemetry = { enable = false },
       },
