@@ -4,23 +4,6 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 
 ## Phase 1 - Critical Functionality (HIGHEST PRIORITY)
 
-### [ ] Completion System
-**Status**: Not configured at all - CRITICAL MISSING FEATURE
-
-Choose one approach:
-- **Option A: nvim-cmp** (stable, widely used)
-  - Add to flake.nix: `nvim-cmp`, `cmp-nvim-lsp`, `cmp-buffer`, `cmp-path`
-  - Add snippets: `nvim-snippets`, `friendly-snippets`
-  - Create `lua/plugins/nvim-cmp.lua` config
-  - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/extras/coding/nvim-cmp.lua`
-
-- **Option B: blink.cmp** (newer, faster, native Rust)
-  - Add to flake.nix: `blink-cmp`, `friendly-snippets`
-  - Create `lua/plugins/blink.lua` config
-  - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/extras/coding/blink.lua`
-
-**Recommendation**: Start with nvim-cmp (more stable, better documented)
-
 ### [ ] Mini.ai - Advanced Text Objects
 **Status**: Missing - needed for function/class text objects
 
@@ -170,6 +153,7 @@ Plugins that were in old config but not yet in nixcats:
 
 ## Completed Items ✓
 
+- ✓ **Completion System** - blink.cmp with friendly-snippets (Phase 1 complete!)
 - ✓ Yanky - Better yank/paste ring (added recently)
 - ✓ Snacks.nvim - Utility collection (picker, terminal, git, etc.)
 - ✓ Which-key - Keymap helper
@@ -190,7 +174,7 @@ Plugins that were in old config but not yet in nixcats:
 
 ## Notes
 
-- Current LazyVim uses **either** nvim-cmp **or** blink.cmp (not both)
+- **Completion**: Chose blink.cmp (faster, more modern) over nvim-cmp ✓
 - Many old plugins replaced by Snacks (fzf-lua → snacks.picker, etc.)
 - LazyVim 2025 has moved away from some heavy plugins (noice, etc.)
-- Focus on getting completion working first - it's the most critical gap
+- Phase 1 critical functionality - completion is done! Remaining: text objects and comments
