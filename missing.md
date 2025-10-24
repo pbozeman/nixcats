@@ -85,8 +85,8 @@ Missing entire debugging setup:
 - ✅ `which-key.nvim` - Keybinding hints (configured)
 - ✅ `tint-nvim` - Dim inactive windows (configured)
 - ✅ UI toggles - Diagnostic, line numbers, spell, wrap, etc. (in `lua/plugins/ui-toggles.lua`)
+- ❌ `snacks.input` - Better vim.ui.input interface (disabled - conflicts with blink.cmp)
 - ❌ `noice.nvim` - Better cmd/message UI (missing)
-- ❌ `dressing.nvim` - Better vim.ui interfaces (missing)
 - ❌ `vim-illuminate` - Highlight word under cursor (missing)
 - ❌ `persistence.nvim` - Session management (missing)
 
