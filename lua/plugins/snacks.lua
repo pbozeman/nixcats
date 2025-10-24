@@ -17,9 +17,6 @@ snacks.setup({
   },
 })
 
--- Helper to check if trouble.nvim is available
-local has_trouble = pcall(require, "trouble")
-
 -- Keymaps
 local map = vim.keymap.set
 
