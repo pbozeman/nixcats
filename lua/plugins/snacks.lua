@@ -8,6 +8,12 @@ end
 snacks.setup({
   picker = {
     enabled = true,
+    matcher = {
+      frecency = true,
+      cwd_bonus = true,
+      history_bonus = true,
+      sort_empty = true,
+    },
   },
 })
 
