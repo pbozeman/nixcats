@@ -30,7 +30,11 @@ local opts = {
     },
     documentation = {
       auto_show = true,
-      auto_show_delay_ms = 200,
+      auto_show_delay_ms = 500, -- Increased delay to reduce race conditions
+      window = {
+        border = "rounded",
+        scrollbar = true,
+      },
     },
     ghost_text = {
       enabled = function()
