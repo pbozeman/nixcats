@@ -32,3 +32,23 @@ vim.keymap.set("n", "<leader>xq", function()
     vim.cmd.copen()
   end
 end, { desc = "Quickfix List" })
+
+-- Messages viewer
+vim.keymap.set("n", "<leader>xm", function()
+  -- Open :messages in a proper buffer window
+  vim.cmd("botright split")
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(0, buf)
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].filetype = "messages"
+
+  -- Get messages and put in buffer
+  local output = vim.fn.execute("messages")
+  local messages = vim.split(vim.trim(output), "\n")
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, messages)
+  vim.bo[buf].modifiable = false
+
+  -- Scroll to bottom to see latest messages
+  vim.cmd("normal! G")
+end, { desc = "Messages" })
