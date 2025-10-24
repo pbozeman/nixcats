@@ -123,6 +123,11 @@ local lsp_servers = {
     cmd = { "svls" },
     filetypes = { "verilog", "systemverilog" },
     root_markers = { ".svls.toml", ".git" },
+    handlers = {
+      -- Suppress startup messages but keep diagnostics
+      ["window/showMessage"] = function() end,
+      ["window/logMessage"] = function() end,
+    },
   },
 
   -- Web (HTML, CSS, JSON, ESLint)
