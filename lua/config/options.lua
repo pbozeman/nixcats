@@ -28,3 +28,11 @@ opt.shiftround = true -- Round indent
 
 -- Concealment
 opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
+
+-- Spell checking
+opt.spell = true
+opt.spelllang = { "en_us" }
+opt.spellfile = vim.fn.stdpath("data") .. "/spell/en.utf-8.add"
+
+-- Load cfilter plugin for quickfix filtering
+vim.cmd("packadd cfilter")

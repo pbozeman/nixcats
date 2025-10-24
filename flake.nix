@@ -240,6 +240,9 @@
           # here. If you dont, check this link out:
           # https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/setup-hooks/make-wrapper.sh
           extraWrapperArgs = {
+            general = [
+              ''--run 'mkdir -p "''${XDG_DATA_HOME:-$HOME/.local/share}/nvim/spell"' ''
+            ];
             test = [
               ''--set CATTESTVAR2 "It worked again!"''
             ];
