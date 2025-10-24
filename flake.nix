@@ -193,6 +193,7 @@
               neo-tree-nvim
               nvim-lspconfig
               nvim-treesitter.withAllGrammars
+              nvim-treesitter-context
               nvim-treesitter-textobjects
               nvim-web-devicons
               smartyank-nvim

@@ -16,6 +16,7 @@ require("config.keymaps")
 
 -- Load plugins
 require("plugins.treesitter") -- Must load before plugins that depend on it
+require("plugins.treesitter-context") -- Depends on treesitter
 require("plugins.ts-comments") -- Depends on treesitter
 require("plugins.colorscheme")
 require("plugins.which-key")
