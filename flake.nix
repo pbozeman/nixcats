@@ -199,6 +199,7 @@
               tint-nvim
               tokyonight-nvim
               trouble-nvim
+              ts-comments-nvim
               vim-tmux-navigator
               which-key-nvim
               yanky-nvim
