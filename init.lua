@@ -5,6 +5,9 @@ vim.cmd([[
   cnoreabbrev <expr> q getcmdtype() == ":" && getcmdline() == "q" ? "qa" : "q"
 ]])
 
+-- Load filetype detection first
+require("config.filetype")
+
 -- Load config
 require("config.options")
 require("config.autocmds")

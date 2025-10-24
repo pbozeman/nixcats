@@ -1,17 +1,22 @@
 -- mini.ai - enhanced text objects for better code navigation
 -- Provides text objects for functions, classes, blocks, arguments, etc.
 --
+-- Language-specific support via custom queries in after/queries/:
+--   C/C++: @function.inner added (original uses #make-range! which mini.ai doesn't support)
+--   Verilog/SystemVerilog: modules→c, always/functions/tasks→f, seq_block/generate→o
+--     (.v/.sv files use systemverilog filetype/parser)
+--
 -- Usage examples:
---   vaf  - select around function
+--   vaf  - select around function (or always_ff/always_comb/task in verilog)
 --   vif  - select inner function
---   dac  - delete around class
---   cio  - change inner block
+--   dac  - delete around class (or module in verilog)
+--   cio  - change inner block (seq_block/begin-end in verilog)
 --   viu  - select inner function call (usage)
 --
 -- Text objects:
---   f - function
---   c - class
---   o - code block (conditional, loop, etc.)
+--   f - function (always_ff/always_comb/task in verilog)
+--   c - class (module in verilog)
+--   o - code block (conditional, loop, seq_block/begin-end, etc.)
 --   t - tags (HTML/XML)
 --   d - digits
 --   e - word with case
