@@ -4,15 +4,8 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 
 ## Phase 1 - Critical Functionality (HIGHEST PRIORITY)
 
-### [ ] Mini.ai - Advanced Text Objects
-**Status**: Missing - needed for function/class text objects
-
-- Add to flake.nix: Already have `mini-nvim` ✓
-- Create `lua/plugins/mini-ai.lua` config
-- Provides text objects: function (`if`/`af`), class (`ic`/`ac`), blocks, etc.
-- Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/coding.lua:38-71`
-
 ### [ ] Better Comments - ts-comments.nvim
+
 **Status**: Missing - needed for proper multi-language commenting
 
 - Add to flake.nix: `ts-comments-nvim`
@@ -23,6 +16,7 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 ## Phase 2 - Quality of Life (HIGH PRIORITY)
 
 ### [ ] Flash.nvim - Enhanced Navigation
+
 **Status**: Missing - LazyVim core feature
 
 - Add to flake.nix: `flash-nvim`
@@ -32,6 +26,7 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/editor.lua:30-54`
 
 ### [ ] Todo Comments
+
 **Status**: Missing - useful for project navigation
 
 - Add to flake.nix: `todo-comments-nvim`
@@ -40,6 +35,7 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/editor.lua:254-270`
 
 ### [ ] LazyDev - Neovim Lua Development
+
 **Status**: Missing - essential for config development
 
 - Add to flake.nix: `lazydev-nvim`
@@ -48,6 +44,7 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/coding.lua:75-87`
 
 ### [ ] Grug-far - Multi-file Search/Replace
+
 **Status**: Missing - useful utility
 
 - Add to flake.nix: `grug-far-nvim`
@@ -56,9 +53,11 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/editor.lua:4-25`
 
 ### [ ] Default LazyVim Keymaps
+
 **Status**: Partially missing - adopt standard keymaps
 
 Update `lua/config/keymaps.lua`:
+
 - `<S-h>` / `<S-l>` - Previous/Next buffer
 - `j` / `k` - Better up/down for wrapped lines
 - `<esc>` - Clear search highlight
@@ -66,23 +65,28 @@ Update `lua/config/keymaps.lua`:
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/config/keymaps.lua`
 
 ### [ ] Default LazyVim Options
+
 **Status**: Some missing
 
 Update `lua/config/options.lua`:
+
 - Set `spelllang = { "en" }`
 - Set `root_spec` for project root detection
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/config/options.lua:101,33`
 
 ### [ ] Default LazyVim Autocmds
+
 **Status**: Missing spell checking for text files
 
 Update `lua/config/autocmds.lua`:
+
 - Enable spell + wrap for markdown/text files
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/config/autocmds.lua:98-105`
 
 ## Phase 3 - Advanced Features (MEDIUM PRIORITY)
 
 ### [ ] Debugging (DAP) Setup
+
 **Status**: Not configured - needed for C++ development
 
 - Add to flake.nix: `nvim-dap`, `nvim-dap-ui`, `nvim-dap-virtual-text`, `nvim-nio`
@@ -92,6 +96,7 @@ Update `lua/config/autocmds.lua`:
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/extras/dap/core.lua`
 
 ### [ ] C++ Development Extensions
+
 **Status**: Partially missing
 
 - Add to flake.nix: `clangd-extensions-nvim`
@@ -100,6 +105,7 @@ Update `lua/config/autocmds.lua`:
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/extras/lang/clangd.lua:25-53`
 
 ### [ ] Mini.pairs - Auto-pairs
+
 **Status**: Missing - optional QoL feature
 
 - Already have `mini-nvim` in flake.nix ✓
@@ -110,17 +116,21 @@ Update `lua/config/autocmds.lua`:
 ## Phase 4 - Specialized Features (AS NEEDED)
 
 ### [ ] C++ Build/Test Tools
+
 **Status**: Missing from old config
 
 From old lazyvim-nix `cpp-dev.lua`:
+
 - `cmake-tools.nvim` - CMake integration
 - `overseer.nvim` - Task runner for builds/tests
 - `cmake-gtest.nvim` - GTest integration
 
 ### [ ] Old Configuration Migration
+
 **Status**: Not started - migrate as needed
 
 From old lazyvim-nix config:
+
 - Verilog autocmds (`lua/config/autocmds.lua` in old config)
 - Java indentation settings
 - Custom formatter configs (doxyformat for specific directories)
@@ -129,9 +139,11 @@ From old lazyvim-nix config:
 - Better-escape (`jk`/`jj` to escape)
 
 ### [ ] Missing from Old Config
+
 **Status**: Evaluate if needed
 
 Plugins that were in old config but not yet in nixcats:
+
 - `persistence.nvim` - Session management
 - `oil.nvim` - File manager alternative to neo-tree
 - `vim-illuminate` - Highlight word under cursor
@@ -146,6 +158,7 @@ Plugins that were in old config but not yet in nixcats:
 ## Runtime Dependencies to Add
 
 ### [ ] Missing Runtime Tools
+
 **Status**: Need to add to flake.nix lspsAndRuntimeDeps
 
 - `jq` - JSON processing tool

@@ -119,15 +119,10 @@ local lsp_servers = {
   },
 
   -- Verilog/SystemVerilog
-  svls = {
-    cmd = { "svls" },
+  verible = {
+    cmd = { "verible-verilog-ls", "--rules_config_search" },
     filetypes = { "verilog", "systemverilog" },
-    root_markers = { ".svls.toml", ".git" },
-    handlers = {
-      -- Suppress startup messages but keep diagnostics
-      ["window/showMessage"] = function() end,
-      ["window/logMessage"] = function() end,
-    },
+    root_markers = { ".git" },
   },
 
   -- Web (HTML, CSS, JSON, ESLint)

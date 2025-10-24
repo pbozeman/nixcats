@@ -167,7 +167,6 @@
               taplo
 
               # Verilog/SystemVerilog
-              svls
               verible
 
               # Web (HTML, CSS, JSON, ESLint)
