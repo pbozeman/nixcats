@@ -4,7 +4,7 @@ if not ok then
   return
 end
 
--- Setup snacks with picker enabled
+-- Setup snacks with picker and words enabled
 snacks.setup({
   picker = {
     enabled = true,
@@ -14,6 +14,9 @@ snacks.setup({
       history_bonus = true,
       sort_empty = true,
     },
+  },
+  words = {
+    enabled = true,
   },
 })
 
@@ -131,3 +134,11 @@ end, { desc = "LSP Symbols" })
 map("n", "<leader>sS", function()
   snacks.picker.lsp_workspace_symbols()
 end, { desc = "LSP Workspace Symbols" })
+
+-- Navigate between word references (from snacks.words)
+map("n", "]]", function()
+  snacks.words.jump(vim.v.count1)
+end, { desc = "Next Reference" })
+map("n", "[[", function()
+  snacks.words.jump(-vim.v.count1)
+end, { desc = "Prev Reference" })
