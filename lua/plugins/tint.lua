@@ -36,22 +36,22 @@ vim.api.nvim_create_autocmd("WinEnter", {
     local current_buf = vim.api.nvim_win_get_buf(current_win)
     local current_filetype = vim.bo[current_buf].filetype
 
-    -- When entering neo-tree, untint the window we left
-    if current_filetype == "neo-tree" then
+    -- When entering neo-tree or snacks, untint the window we left
+    if current_filetype == "neo-tree" or current_filetype:match("^snacks_") then
       if last_win and vim.api.nvim_win_is_valid(last_win) then
         tint.untint(last_win)
       end
       return
     end
 
-    -- Tint all windows except current and neo-tree
+    -- Tint all windows except current, neo-tree, and snacks
     for _, win in ipairs(vim.api.nvim_list_wins()) do
       local buf = vim.api.nvim_win_get_buf(win)
       local filetype = vim.bo[buf].filetype
 
       if win == current_win then
         tint.untint(win)
-      elseif filetype ~= "neo-tree" then
+      elseif filetype ~= "neo-tree" and not filetype:match("^snacks_") then
         tint.tint(win)
       end
     end
@@ -67,17 +67,17 @@ vim.api.nvim_create_autocmd("FocusLost", {
   end,
 })
 
--- Untint current window and neo-tree when gaining focus
+-- Untint current window, neo-tree, and snacks when gaining focus
 vim.api.nvim_create_autocmd("FocusGained", {
   callback = function()
     local current_win = vim.api.nvim_get_current_win()
     tint.untint(current_win)
 
-    -- Always untint neo-tree windows
+    -- Always untint neo-tree and snacks windows
     for _, win in ipairs(vim.api.nvim_list_wins()) do
       local buf = vim.api.nvim_win_get_buf(win)
       local filetype = vim.bo[buf].filetype
-      if filetype == "neo-tree" then
+      if filetype == "neo-tree" or filetype:match("^snacks_") then
         tint.untint(win)
       end
     end

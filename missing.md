@@ -122,9 +122,8 @@ From `/home/pbozeman/src/lazyvim-nix/config/lua/plugins/plantuml.lua`:
 
 ### 11. Other Plugins
 
-**Status**: ❌ Missing
+✅ `snacks-nvim` - Collection of small utilities
 
-- `snacks-nvim` - Collection of small utilities
 - `project-nvim` - Project management
 - `headlines-nvim` - Markdown headline highlighting
 - `render-markdown-nvim` - Markdown rendering
