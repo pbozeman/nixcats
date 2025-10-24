@@ -182,7 +182,9 @@
           startupPlugins = {
             gitPlugins = with pkgs.neovimPlugins; [ ];
             general = with pkgs.vimPlugins; [
+              blink-cmp
               conform-nvim
+              friendly-snippets
               gitsigns-nvim
               indent-blankline-nvim
               lualine-nvim

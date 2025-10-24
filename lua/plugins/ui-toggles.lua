@@ -40,3 +40,20 @@ vim.keymap.set("n", "<leader>uc", function()
     vim.opt.conceallevel = 0
   end
 end, { desc = "Toggle Conceal" })
+
+-- Toggle auto-completion (blink.cmp)
+-- When disabled, you can still manually trigger with <C-Space>
+vim.g.auto_completion_enabled = false
+Snacks.toggle({
+  name = "Auto-Completion",
+  notify = false,
+  get = function()
+    return vim.g.auto_completion_enabled
+  end,
+  set = function(state)
+    vim.g.auto_completion_enabled = state
+    if not state then
+      require("blink.cmp").hide()
+    end
+  end,
+}):map("<leader>ua")
