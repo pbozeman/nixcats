@@ -4,10 +4,10 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 
 ## 📊 Progress Summary
 
-**Phase 1 (Critical)**: 2/3 complete (67%)
+**Phase 1 (Critical)**: ✅ **COMPLETE!** (100%)
 - ✓ Completion system (blink.cmp)
 - ✓ Text objects (mini.ai + treesitter-textobjects)
-- ⏳ **ts-comments.nvim** - NEXT UP!
+- ✓ Better comments (ts-comments.nvim)
 
 **Phase 2 (Quality of Life)**: 2/7 complete (29%)
 - ✓ Some default keymaps (j/k, esc)
@@ -22,16 +22,17 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 
 ---
 
-## Phase 1 - Critical Functionality (HIGHEST PRIORITY)
+## Phase 1 - Critical Functionality ✅ **COMPLETE!**
 
-### [ ] Better Comments - ts-comments.nvim
+### [x] Better Comments - ts-comments.nvim
 
-**Status**: Missing - **ONLY REMAINING PHASE 1 ITEM**
+**Status**: ✅ Complete!
 
-- Add to flake.nix: `ts-comments-nvim`
-- Create `lua/plugins/ts-comments.lua` config
-- Replaces need for mini.comment
-- Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/plugins/coding.lua:28-32`
+- ✓ Added to flake.nix:202 `ts-comments-nvim`
+- ✓ Created `lua/plugins/ts-comments.lua` config
+- ✓ Added to init.lua:19 plugin loading
+- ✓ Fixed treesitter reparse issue for text objects after commenting
+- Keymaps: `gcc` (line), `gc{motion}` (motion), `gb{motion}` (block)
 
 ## Phase 2 - Quality of Life (HIGH PRIORITY)
 
@@ -188,9 +189,10 @@ Plugins that were in old config but not yet in nixcats:
 
 ## Completed Items ✓
 
-### Phase 1 Complete (except ts-comments)
+### Phase 1 - 100% Complete! 🎉
 - ✓ **Completion System** - blink.cmp with friendly-snippets (lua/plugins/blink.lua)
 - ✓ **Text Objects** - mini.ai + nvim-treesitter-textobjects (lua/plugins/mini-ai.lua)
+- ✓ **Better Comments** - ts-comments.nvim (lua/plugins/ts-comments.lua)
 
 ### Core Plugins
 - ✓ Yanky - Better yank/paste ring (lua/plugins/yanky.lua)
@@ -215,7 +217,8 @@ Plugins that were in old config but not yet in nixcats:
 
 - **Completion**: Chose blink.cmp (faster, more modern) over nvim-cmp ✓
 - **Text Objects**: Using mini.ai + nvim-treesitter-textobjects ✓
+- **Comments**: ts-comments.nvim with treesitter integration ✓
 - Many old plugins replaced by Snacks (fzf-lua → snacks.picker, etc.)
 - LazyVim 2025 has moved away from some heavy plugins (noice, etc.)
-- **Phase 1 Status**: Almost complete! Only ts-comments.nvim remaining
-- Current focus: Finish Phase 1, then move to Phase 2 quality-of-life features
+- **Phase 1 Status**: ✅ **COMPLETE!** All critical functionality is in place!
+- **Current focus**: Move to Phase 2 quality-of-life features (Flash, todo-comments, lazydev, grug-far)

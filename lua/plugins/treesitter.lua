@@ -51,3 +51,19 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     end
   end,
 })
+
+-- Reparse after text changes in normal mode (for commenting/uncommenting)
+-- Only fires after normal mode changes, not while typing in insert mode
+vim.api.nvim_create_autocmd("TextChanged", {
+  callback = function(args)
+    local buf = args.buf
+    if vim.bo[buf].buftype ~= "" then
+      return
+    end
+
+    local ok, parser = pcall(vim.treesitter.get_parser, buf)
+    if ok and parser then
+      parser:parse()
+    end
+  end,
+})
