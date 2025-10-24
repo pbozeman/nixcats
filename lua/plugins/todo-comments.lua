@@ -5,6 +5,8 @@ if not ok then
   return
 end
 
+local snacks_ok, snacks = pcall(require, "snacks")
+
 todo_comments.setup({
   signs = true, -- show icons in the signs column
   keywords = {
@@ -38,12 +40,14 @@ todo_comments.setup({
 local map = vim.keymap.set
 
 -- Search todos with snacks picker
-map("n", "<leader>st", function()
-  require("snacks").picker.todo_comments()
-end, { desc = "Todo" })
-map("n", "<leader>sT", function()
-  require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-end, { desc = "Todo/Fix/Fixme" })
+if snacks_ok then
+  map("n", "<leader>st", function()
+    snacks.picker.todo_comments()
+  end, { desc = "Todo" })
+  map("n", "<leader>sT", function()
+    snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+  end, { desc = "Todo/Fix/Fixme" })
+end
 
 -- Trouble mappings
 map("n", "<leader>xt", "<cmd>Trouble todo<cr>", { desc = "Todo (Trouble)" })
