@@ -2,11 +2,31 @@
 
 Based on comparison with current LazyVim (2025) and missing.md analysis.
 
+## 📊 Progress Summary
+
+**Phase 1 (Critical)**: 2/3 complete (67%)
+- ✓ Completion system (blink.cmp)
+- ✓ Text objects (mini.ai + treesitter-textobjects)
+- ⏳ **ts-comments.nvim** - NEXT UP!
+
+**Phase 2 (Quality of Life)**: 2/7 complete (29%)
+- ✓ Some default keymaps (j/k, esc)
+- ✓ Some autocmds (yank highlight, cursor position)
+- ⏳ Flash.nvim, todo-comments, lazydev, grug-far, remaining keymaps/options
+
+**Phase 3 (Advanced)**: Not started
+- DAP debugging, C++ extensions, mini.pairs
+
+**Phase 4 (Specialized)**: Not started
+- Build/test tools, old config migration
+
+---
+
 ## Phase 1 - Critical Functionality (HIGHEST PRIORITY)
 
 ### [ ] Better Comments - ts-comments.nvim
 
-**Status**: Missing - needed for proper multi-language commenting
+**Status**: Missing - **ONLY REMAINING PHASE 1 ITEM**
 
 - Add to flake.nix: `ts-comments-nvim`
 - Create `lua/plugins/ts-comments.lua` config
@@ -54,14 +74,14 @@ Based on comparison with current LazyVim (2025) and missing.md analysis.
 
 ### [ ] Default LazyVim Keymaps
 
-**Status**: Partially missing - adopt standard keymaps
+**Status**: Mostly done - few remaining
 
 Update `lua/config/keymaps.lua`:
 
-- `<S-h>` / `<S-l>` - Previous/Next buffer
-- `j` / `k` - Better up/down for wrapped lines
-- `<esc>` - Clear search highlight
-- Better indenting with `<` / `>`
+- [ ] `<S-h>` / `<S-l>` - Previous/Next buffer
+- [x] `j` / `k` - Better up/down for wrapped lines (keymaps.lua:6-9)
+- [x] `<esc>` - Clear search highlight + close floats (keymaps.lua:12-24)
+- [ ] Better indenting with `<` / `>` - stay in visual mode
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/config/keymaps.lua`
 
 ### [ ] Default LazyVim Options
@@ -76,11 +96,13 @@ Update `lua/config/options.lua`:
 
 ### [ ] Default LazyVim Autocmds
 
-**Status**: Missing spell checking for text files
+**Status**: Mostly done - spell checking still needed
 
 Update `lua/config/autocmds.lua`:
 
-- Enable spell + wrap for markdown/text files
+- [x] Highlight on yank (autocmds.lua:8-13)
+- [x] Go to last cursor position (autocmds.lua:16-31)
+- [ ] Enable spell + wrap for markdown/text files
 - Reference: `/home/pbozeman/src/LazyVim/lua/lazyvim/config/autocmds.lua:98-105`
 
 ## Phase 3 - Advanced Features (MEDIUM PRIORITY)
@@ -166,28 +188,34 @@ Plugins that were in old config but not yet in nixcats:
 
 ## Completed Items ✓
 
-- ✓ **Completion System** - blink.cmp with friendly-snippets (Phase 1 complete!)
-- ✓ Yanky - Better yank/paste ring (added recently)
-- ✓ Snacks.nvim - Utility collection (picker, terminal, git, etc.)
-- ✓ Which-key - Keymap helper
-- ✓ Gitsigns - Git integration
-- ✓ Trouble - Diagnostics list
-- ✓ Neo-tree - File explorer
-- ✓ LSP basic setup
-- ✓ Treesitter with all grammars
-- ✓ Conform - Formatting
-- ✓ Lualine - Statusline
-- ✓ Mini.surround - Surround operations
-- ✓ Mini.indentscope - Scope indicator
-- ✓ Indent-blankline - Indentation guides
-- ✓ Marks - Better mark visualization
-- ✓ Smartyank - Smart yank behavior
-- ✓ Tint - Inactive window dimming
-- ✓ Tmux navigator - Seamless tmux navigation
+### Phase 1 Complete (except ts-comments)
+- ✓ **Completion System** - blink.cmp with friendly-snippets (lua/plugins/blink.lua)
+- ✓ **Text Objects** - mini.ai + nvim-treesitter-textobjects (lua/plugins/mini-ai.lua)
+
+### Core Plugins
+- ✓ Yanky - Better yank/paste ring (lua/plugins/yanky.lua)
+- ✓ Snacks.nvim - Utility collection: picker, terminal, git, etc. (lua/plugins/snacks.lua)
+- ✓ Which-key - Keymap helper (lua/plugins/which-key.lua)
+- ✓ Gitsigns - Git integration (lua/plugins/gitsigns.lua)
+- ✓ Trouble - Diagnostics list (lua/plugins/trouble.lua)
+- ✓ Neo-tree - File explorer (lua/plugins/neo-tree.lua)
+- ✓ LSP basic setup (lua/plugins/lsp.lua)
+- ✓ Treesitter with all grammars (lua/plugins/treesitter.lua)
+- ✓ Conform - Formatting (lua/plugins/conform.lua)
+- ✓ Lualine - Statusline (lua/plugins/lualine.lua)
+- ✓ Mini.surround - Surround operations (lua/plugins/mini-surround.lua)
+- ✓ Mini.indentscope - Scope indicator (lua/plugins/mini-indentscope.lua)
+- ✓ Indent-blankline - Indentation guides (lua/plugins/indent-blankline.lua)
+- ✓ Marks - Better mark visualization (lua/plugins/marks.lua)
+- ✓ Smartyank - Smart yank behavior (lua/plugins/smartyank.lua)
+- ✓ Tint - Inactive window dimming (lua/plugins/tint.lua)
+- ✓ Tmux navigator - Seamless tmux navigation (lua/plugins/tmux.lua)
 
 ## Notes
 
 - **Completion**: Chose blink.cmp (faster, more modern) over nvim-cmp ✓
+- **Text Objects**: Using mini.ai + nvim-treesitter-textobjects ✓
 - Many old plugins replaced by Snacks (fzf-lua → snacks.picker, etc.)
 - LazyVim 2025 has moved away from some heavy plugins (noice, etc.)
-- Phase 1 critical functionality - completion is done! Remaining: text objects and comments
+- **Phase 1 Status**: Almost complete! Only ts-comments.nvim remaining
+- Current focus: Finish Phase 1, then move to Phase 2 quality-of-life features
