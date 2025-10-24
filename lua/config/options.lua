@@ -18,3 +18,10 @@ opt.cmdheight = 0
 
 -- Auto-reload files when changed outside Neovim
 opt.autoread = true
+
+-- Indentation
+opt.expandtab = true -- Use spaces instead of tabs
+opt.shiftwidth = 2 -- Size of an indent
+opt.tabstop = 2 -- Number of spaces tabs count for
+opt.smartindent = true -- Insert indents automatically
+opt.shiftround = true -- Round indent
