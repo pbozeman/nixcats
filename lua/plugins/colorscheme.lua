@@ -18,10 +18,6 @@ tokyonight.setup({
     colors.red = "#bf616a"
     colors.red1 = "#bf616a"
   end,
-  on_highlights = function(hl, _)
-    -- Set inactive window background to match tmux inactive panes
-    hl.NormalNC = { bg = "#111111" }
-  end,
 })
 
 vim.cmd.colorscheme("tokyonight")
