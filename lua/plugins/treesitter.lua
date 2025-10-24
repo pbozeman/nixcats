@@ -25,6 +25,15 @@ require("nvim-treesitter.configs").setup({
   },
 })
 
+-- Auto-close and auto-rename HTML tags
+require("nvim-ts-autotag").setup({
+  opts = {
+    enable_close = true, -- Auto close tags
+    enable_rename = true, -- Auto rename pairs of tags
+    enable_close_on_slash = false, -- Auto close on trailing </
+  },
+})
+
 -- Enable folding via treesitter
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

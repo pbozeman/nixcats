@@ -195,6 +195,7 @@
               nvim-treesitter.withAllGrammars
               nvim-treesitter-context
               nvim-treesitter-textobjects
+              nvim-ts-autotag
               nvim-web-devicons
               smartyank-nvim
               snacks-nvim
