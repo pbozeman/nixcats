@@ -32,11 +32,11 @@ local lsp_servers = {
     filetypes = { "sh", "bash" },
   },
 
-  -- C/C++
-  clangd = {
-    cmd = { "clangd" },
-    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
-  },
+  -- C/C++ - configured via clangd_extensions below
+  -- clangd = {
+  --   cmd = { "clangd" },
+  --   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+  -- },
 
   -- CMake
   neocmake = {
@@ -162,6 +162,49 @@ for name, config in pairs(lsp_servers) do
   vim.lsp.enable(name)
 end
 
+-- Configure clangd with extensions
+require("clangd_extensions").setup({
+  server = {
+    cmd = { "clangd" },
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+  },
+  extensions = {
+    -- Enable inlay hints
+    inlay_hints = {
+      inline = false,
+      only_current_line = false,
+      show_parameter_hints = true,
+      parameter_hints_prefix = "<- ",
+      other_hints_prefix = "=> ",
+      max_len_align = false,
+      max_len_align_padding = 1,
+      right_align = false,
+      right_align_padding = 7,
+      highlight = "Comment",
+    },
+    -- Enable AST viewing
+    ast = {
+      role_icons = {
+        type = "",
+        declaration = "",
+        expression = "",
+        specifier = "",
+        statement = "",
+        ["template argument"] = "",
+      },
+      kind_icons = {
+        Compound = "",
+        Recovery = "",
+        TranslationUnit = "",
+        PackExpansion = "",
+        TemplateTypeParm = "",
+        TemplateTemplateParm = "",
+        TemplateParamObject = "",
+      },
+    },
+  },
+})
+
 -- Enable inlay hints by default
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspInlayHints", {}),
@@ -261,3 +304,22 @@ vim.keymap.set("n", "<leader>cy", function()
     vim.notify("No diagnostic on this line", vim.log.levels.WARN)
   end
 end, { desc = "Yank Diagnostic" })
+
+-- Clangd-specific keymaps
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("ClangdKeymaps", {}),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client.name == "clangd" then
+      local buffer = ev.buf
+      vim.keymap.set(
+        "n",
+        "<leader>ch",
+        "<cmd>ClangdSwitchSourceHeader<cr>",
+        { buffer = buffer, desc = "Switch Source/Header" }
+      )
+      vim.keymap.set("n", "<leader>cs", "<cmd>ClangdSymbolInfo<cr>", { buffer = buffer, desc = "Symbol Info" })
+      vim.keymap.set("n", "<leader>ct", "<cmd>ClangdTypeHierarchy<cr>", { buffer = buffer, desc = "Type Hierarchy" })
+    end
+  end,
+})

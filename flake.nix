@@ -182,6 +182,7 @@
             gitPlugins = with pkgs.neovimPlugins; [ ];
             general = with pkgs.vimPlugins; [
               blink-cmp
+              clangd_extensions-nvim
               conform-nvim
               friendly-snippets
               gitsigns-nvim

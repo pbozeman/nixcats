@@ -9,22 +9,26 @@ Comparison between the old lazyvim-nix configuration and the current nixcats set
 **~75% Complete** - Most core functionality is now configured!
 
 ✅ **Fully Configured** (100%):
+
 - Completion (blink.cmp)
 - Navigation & Search (snacks picker with frecency)
 - Treesitter (with textobjects, ts-comments)
 
 ✅ **Mostly Configured** (70-90%):
+
 - UI Enhancements (todo-comments, trouble, which-key, tint, ui-toggles)
 - Git Integration (gitsigns, yanky, smartyank, snacks git pickers)
 - LSP (basic setup, inlay hints toggle, conform formatting)
 - Mini.nvim modules (ai, surround, indentscope)
 
 ⚠️ **Partially Configured** (40-60%):
+
 - Keymaps (many via plugins, some custom ones missing)
 - Options (core settings, some missing)
 - Language-specific features (formatters/LSPs present, specialized tools missing)
 
 ❌ **Missing** (0%):
+
 - Debugging (nvim-dap)
 - C++ Development Tools (cmake-tools, overseer)
 - Specialized file types (neorg, plantuml)
@@ -37,6 +41,7 @@ Comparison between the old lazyvim-nix configuration and the current nixcats set
 **Status**: ✅ **CONFIGURED** (Using blink.cmp instead of nvim-cmp)
 
 Your current nixcats has:
+
 - `blink-cmp` (modern completion engine - faster than nvim-cmp)
 - `friendly-snippets` (snippet collection)
 - Auto-completion disabled by default, toggle with `<leader>ua`
@@ -95,6 +100,7 @@ Missing entire debugging setup:
 **Status**: ✅ **MOSTLY CONFIGURED**
 
 Your current config has:
+
 - ✅ `mini.indentscope` - Scope indicator (configured in `lua/plugins/mini-indentscope.lua`)
 - ✅ `mini.surround` - Surround operations (configured in `lua/plugins/mini-surround.lua`)
 - ✅ `mini.ai` - Text objects (configured in `lua/plugins/mini-ai.lua`)
