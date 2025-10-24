@@ -29,3 +29,28 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end,
 })
+
+-- Auto-reload files when changed externally
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = augroup("checktime"),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+-- Periodic file change checking (every 1 second)
+local uv = vim.uv or vim.loop
+local timer = uv.new_timer()
+if timer then
+  timer:start(
+    1000, -- Start after 1 second
+    1000, -- Repeat every 1 second
+    vim.schedule_wrap(function()
+      if vim.o.buftype ~= "nofile" then
+        vim.cmd("checktime")
+      end
+    end)
+  )
+end

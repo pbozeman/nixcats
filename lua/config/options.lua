@@ -15,3 +15,6 @@ opt.cursorline = true
 
 -- Don't show cmd line when not in use
 opt.cmdheight = 0
+
+-- Auto-reload files when changed outside Neovim
+opt.autoread = true
