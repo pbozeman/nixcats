@@ -71,3 +71,34 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.conceallevel = 0
   end,
 })
+
+-- Setup comment formatting for SystemVerilog
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("systemverilog_comments"),
+  pattern = { "verilog", "systemverilog" },
+  callback = function()
+    -- Set comment string for commentstring (used by comment plugins)
+    vim.opt_local.commentstring = "// %s"
+    -- Configure comment formatting for gq
+    vim.opt_local.comments = "://"
+    -- Set textwidth for SystemVerilog files
+    vim.opt_local.textwidth = 80
+    -- Enable automatic comment formatting
+    -- t = auto-wrap text using textwidth
+    -- c = auto-wrap comments using textwidth
+    -- q = allow formatting comments with gq
+    vim.opt_local.formatoptions:append("tcq")
+  end,
+})
+
+-- Disable LSP formatexpr for verible - use vim's built-in gq for text wrapping
+-- Code formatting is already handled by conform.nvim
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = augroup("verible_no_formatexpr"),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client.name == "verible" then
+      vim.bo[ev.buf].formatexpr = ""
+    end
+  end,
+})
