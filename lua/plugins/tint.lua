@@ -5,15 +5,13 @@ end
 
 tint.setup({
   -- Darken colors, use a positive value to brighten
-  tint = -50,
-  -- Saturation to preserve
-  saturation = 0.8,
+  tint = -40,
   -- Showing default behavior, but value here can be predefined set of transforms
-  transforms = require("tint").transforms.SATURATE_TINT,
+  transforms = require("tint").transforms.TINT,
   -- Tint background portions of highlight groups
   tint_background_colors = false,
-  -- Don't tint number column highlight groups
-  highlight_ignore_patterns = { "^LineNr$" },
+  -- Don't tint number column and window separator highlight groups
+  highlight_ignore_patterns = { "^LineNr$", "WinSeparator", "VertSplit" },
   -- Disable tint's automatic behavior by ignoring all windows
   window_ignore_function = function()
     return true
