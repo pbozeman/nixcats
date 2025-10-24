@@ -103,4 +103,4 @@ local function ask_claude()
   vim.notify(string.format("Copied %d chars to clipboard - paste in Claude window!", #prompt), vim.log.levels.INFO)
 end
 
-vim.keymap.set({ "n", "v" }, "<leader>cC", ask_claude, { desc = "Ask Claude About Code" })
+vim.keymap.set({ "n", "v" }, "<leader>cc", ask_claude, { desc = "Ask Claude About Code" })
