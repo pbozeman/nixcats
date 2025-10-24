@@ -1,5 +1,13 @@
 -- Keymaps configuration
 
+-- Better up/down navigation - respects line wrapping
+-- When no count is given, move by visual line (gj/gk)
+-- When count is given (e.g., 5j), move by actual line (j/k)
+vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+vim.keymap.set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+vim.keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+
 -- Clear search highlights and close floating windows on escape
 vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
   vim.cmd("noh")
