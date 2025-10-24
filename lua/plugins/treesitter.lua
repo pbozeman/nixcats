@@ -31,9 +31,9 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = false -- Don't fold by default
 
 -- Override the language mapping AFTER treesitter.configs.setup
--- systemverilog filetype should use systemverilog parser (not verilog)
--- (Neovim/nvim-treesitter default to mapping systemverilog → verilog, but parser is systemverilog.so)
-vim.treesitter.language.register("systemverilog", "systemverilog")
+-- systemverilog filetype should use verilog language for queries
+-- Parser is systemverilog.so but queries are under queries/verilog/
+vim.treesitter.language.register("verilog", "systemverilog")
 
 -- Ensure treesitter parses on buffer enter
 -- This is needed for mini.ai to work immediately (otherwise parser is lazy)
