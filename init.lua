@@ -12,6 +12,7 @@ require("config.commands")
 require("config.keymaps")
 
 -- Load plugins
+require("plugins.treesitter") -- Must load before plugins that depend on it
 require("plugins.colorscheme")
 require("plugins.which-key")
 require("plugins.trouble")
@@ -25,6 +26,7 @@ require("plugins.indent-blankline")
 require("plugins.marks")
 require("plugins.mini-indentscope")
 require("plugins.mini-surround")
+require("plugins.mini-ai")
 require("plugins.neo-tree")
 require("plugins.smartyank")
 require("plugins.tmux")
