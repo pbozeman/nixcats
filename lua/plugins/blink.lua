@@ -33,7 +33,9 @@ local opts = {
       auto_show_delay_ms = 200,
     },
     ghost_text = {
-      enabled = true,
+      enabled = function()
+        return vim.g.auto_completion_enabled ~= false
+      end,
     },
   },
 
