@@ -34,5 +34,8 @@ opt.spell = true
 opt.spelllang = { "en_us" }
 opt.spellfile = vim.fn.stdpath("data") .. "/spell/en.utf-8.add"
 
+-- Clipboard integration with system clipboard
+opt.clipboard = "unnamedplus"
+
 -- Load cfilter plugin for quickfix filtering
 vim.cmd("packadd cfilter")
