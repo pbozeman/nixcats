@@ -19,14 +19,15 @@
 (always_construct) @function.outer
 
 ; For always_comb/always_latch (no timing control, has seq_block)
-; Inner is the seq_block (includes begin/end, but that's the actual function body)
+; Inner is the statements inside begin/end (not the begin/end keywords themselves)
 (always_construct
   (statement
     (statement_item
-      (seq_block) @function.inner)))
+      (seq_block
+        (statement_or_null) @function.inner))))
 
 ; For always_ff with timing control and begin/end
-; Inner is the seq_block (includes begin/end)
+; Inner is the statements inside begin/end (not the begin/end keywords themselves)
 (always_construct
   (statement
     (statement_item
@@ -34,7 +35,8 @@
         (statement_or_null
           (statement
             (statement_item
-              (seq_block) @function.inner)))))))
+              (seq_block
+                (statement_or_null) @function.inner))))))))
 
 ; For always_ff with timing control but no begin/end (single statement)
 ; Inner is just the statement
@@ -52,9 +54,12 @@
 (task_body_declaration) @function.inner
 
 ; Blocks (seq_block, generate)
-; Both inner and outer are the same - the whole block including begin/end
+; outer includes begin/end, inner is just the statements between
 (seq_block) @block.outer
-(seq_block) @block.inner
+
+; Inner block: just the statements, not begin/end keywords
+(seq_block
+  (statement_or_null) @block.inner)
 
 (generate_block) @block.outer
 (generate_block) @block.inner
@@ -70,3 +75,9 @@
 ; Interfaces (SystemVerilog)
 (interface_declaration) @class.outer
 (interface_declaration) @class.inner
+
+; Module instantiations
+; vib - inner: just the port list
+; vab - around: the entire instantiation including module name and instance name
+(module_instantiation) @parameter.outer
+(list_of_port_connections) @parameter.inner

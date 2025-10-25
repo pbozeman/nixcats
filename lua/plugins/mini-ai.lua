@@ -11,12 +11,15 @@
 --   vif  - select inner function
 --   dac  - delete around class (or module in verilog)
 --   cio  - change inner block (seq_block/begin-end in verilog)
+--   vib  - select inner block (port list in verilog module instantiation)
+--   vab  - select around block (entire module instantiation)
 --   viu  - select inner function call (usage)
 --
 -- Text objects:
 --   f - function (always_ff/always_comb/task in verilog)
 --   c - class (module in verilog)
 --   o - code block (conditional, loop, seq_block/begin-end, etc.)
+--   b - block (module instantiation in verilog, or seq_block/begin-end)
 --   t - tags (HTML/XML)
 --   d - digits
 --   e - word with case
@@ -46,6 +49,12 @@ ai.setup({
     c = ai.gen_spec.treesitter({
       a = "@class.outer",
       i = "@class.inner",
+    }),
+
+    -- Brackets (default + module instantiations in Verilog)
+    b = ai.gen_spec.treesitter({
+      a = { "@parameter.outer", "@block.outer" },
+      i = { "@parameter.inner", "@block.inner" },
     }),
 
     -- Tags (HTML/XML)
