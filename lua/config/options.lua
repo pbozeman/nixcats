@@ -37,5 +37,11 @@ opt.spellfile = vim.fn.stdpath("data") .. "/spell/en.utf-8.add"
 -- Clipboard integration with system clipboard
 opt.clipboard = "unnamedplus"
 
+-- Search
+opt.ignorecase = true
+opt.smartcase = true
+opt.grepprg = "rg --vimgrep"
+opt.grepformat = "%f:%l:%c:%m"
+
 -- Load cfilter plugin for quickfix filtering
 vim.cmd("packadd cfilter")
