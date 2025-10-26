@@ -43,5 +43,8 @@ opt.smartcase = true
 opt.grepprg = "rg --vimgrep"
 opt.grepformat = "%f:%l:%c:%m"
 
+-- Disable startup screen
+opt.shortmess:append("I")
+
 -- Load cfilter plugin for quickfix filtering
 vim.cmd("packadd cfilter")
