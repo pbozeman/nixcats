@@ -136,9 +136,13 @@ map("n", "<leader>sS", function()
 end, { desc = "LSP Workspace Symbols" })
 
 -- Navigate between word references (from snacks.words)
-map("n", "]]", function()
-  snacks.words.jump(vim.v.count1)
-end, { desc = "Next Reference" })
-map("n", "[[", function()
-  snacks.words.jump(-vim.v.count1)
-end, { desc = "Prev Reference" })
+local repeat_jump = require("config.smart-repeat").make_repeatable_map(
+  function()
+    snacks.words.jump(vim.v.count1)
+  end,
+  function()
+    snacks.words.jump(-vim.v.count1)
+  end
+)
+map("n", "]r", repeat_jump("forward"), { desc = "Next Reference" })
+map("n", "[r", repeat_jump("backward"), { desc = "Prev Reference" })

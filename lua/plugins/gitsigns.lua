@@ -24,27 +24,31 @@ gitsigns.setup({
   },
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
+    local repeat_jump = require("config.smart-repeat").make_repeatable_map
 
     local function map(mode, l, r, desc)
       vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc, silent = true })
     end
 
     -- Navigation
-    map("n", "]h", function()
-      if vim.wo.diff then
-        vim.cmd.normal({ "]c", bang = true })
-      else
-        gs.nav_hunk("next")
+    local hunk_jump = repeat_jump(
+      function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "]c", bang = true })
+        else
+          gs.nav_hunk("next")
+        end
+      end,
+      function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "[c", bang = true })
+        else
+          gs.nav_hunk("prev")
+        end
       end
-    end, "Next Hunk")
-
-    map("n", "[h", function()
-      if vim.wo.diff then
-        vim.cmd.normal({ "[c", bang = true })
-      else
-        gs.nav_hunk("prev")
-      end
-    end, "Prev Hunk")
+    )
+    map("n", "]h", hunk_jump("forward"), "Next Hunk")
+    map("n", "[h", hunk_jump("backward"), "Prev Hunk")
 
     map("n", "]H", function()
       gs.nav_hunk("last")

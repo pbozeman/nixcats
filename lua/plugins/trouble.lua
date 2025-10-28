@@ -34,24 +34,27 @@ map("n", "<leader>xL", "<cmd>Trouble loclist toggle focus=true<cr>", { desc = "L
 map("n", "<leader>xQ", "<cmd>Trouble qflist toggle focus=true<cr>", { desc = "Quickfix List (Trouble)" })
 
 -- Navigate trouble items (or fallback to quickfix)
-map("n", "[q", function()
-  if trouble.is_open() then
-    trouble.prev({ skip_groups = true, jump = true })
-  else
-    local ok_cmd, err = pcall(vim.cmd.cprev)
-    if not ok_cmd then
-      vim.notify(err, vim.log.levels.ERROR)
+local repeat_jump = require("config.smart-repeat").make_repeatable_map(
+  function()
+    if trouble.is_open() then
+      trouble.next({ skip_groups = true, jump = true })
+    else
+      local ok_cmd, err = pcall(vim.cmd.cnext)
+      if not ok_cmd then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
+    end
+  end,
+  function()
+    if trouble.is_open() then
+      trouble.prev({ skip_groups = true, jump = true })
+    else
+      local ok_cmd, err = pcall(vim.cmd.cprev)
+      if not ok_cmd then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
     end
   end
-end, { desc = "Previous Trouble/Quickfix Item" })
-
-map("n", "]q", function()
-  if trouble.is_open() then
-    trouble.next({ skip_groups = true, jump = true })
-  else
-    local ok_cmd, err = pcall(vim.cmd.cnext)
-    if not ok_cmd then
-      vim.notify(err, vim.log.levels.ERROR)
-    end
-  end
-end, { desc = "Next Trouble/Quickfix Item" })
+)
+map("n", "]q", repeat_jump("forward"), { desc = "Next Trouble/Quickfix Item" })
+map("n", "[q", repeat_jump("backward"), { desc = "Previous Trouble/Quickfix Item" })

@@ -13,6 +13,7 @@ require("config.options")
 require("config.autocmds")
 require("config.commands")
 require("config.keymaps")
+require("config.smart-repeat")
 
 -- Load plugins
 require("plugins.treesitter") -- Must load before plugins that depend on it

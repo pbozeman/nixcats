@@ -285,13 +285,21 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
+local repeat_jump = require("config.smart-repeat").make_repeatable_map
+
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
+
+local diagnostic_jump = repeat_jump(diagnostic_goto(true), diagnostic_goto(false))
+vim.keymap.set("n", "]d", diagnostic_jump("forward"), { desc = "Next Diagnostic" })
+vim.keymap.set("n", "[d", diagnostic_jump("backward"), { desc = "Prev Diagnostic" })
+
+local error_jump = repeat_jump(diagnostic_goto(true, "ERROR"), diagnostic_goto(false, "ERROR"))
+vim.keymap.set("n", "]e", error_jump("forward"), { desc = "Next Error" })
+vim.keymap.set("n", "[e", error_jump("backward"), { desc = "Prev Error" })
+
+local warning_jump = repeat_jump(diagnostic_goto(true, "WARN"), diagnostic_goto(false, "WARN"))
+vim.keymap.set("n", "]w", warning_jump("forward"), { desc = "Next Warning" })
+vim.keymap.set("n", "[w", warning_jump("backward"), { desc = "Prev Warning" })
 
 -- Yank diagnostic message
 vim.keymap.set("n", "<leader>cy", function()

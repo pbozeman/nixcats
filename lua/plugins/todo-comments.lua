@@ -52,10 +52,14 @@ end
 -- Trouble mappings
 map("n", "<leader>xt", "<cmd>Trouble todo<cr>", { desc = "Todo (Trouble)" })
 map("n", "<leader>xT", "<cmd>Trouble todo filter={tag={TODO,FIX,FIXME}}<cr>", { desc = "Todo/Fix/Fixme (Trouble)" })
-map("n", "]t", function()
-  require("todo-comments").jump_next()
-end, { desc = "Next Todo Comment" })
 
-map("n", "[t", function()
-  require("todo-comments").jump_prev()
-end, { desc = "Previous Todo Comment" })
+local repeat_jump = require("config.smart-repeat").make_repeatable_map(
+  function()
+    require("todo-comments").jump_next()
+  end,
+  function()
+    require("todo-comments").jump_prev()
+  end
+)
+map("n", "]t", repeat_jump("forward"), { desc = "Next Todo Comment" })
+map("n", "[t", repeat_jump("backward"), { desc = "Previous Todo Comment" })
