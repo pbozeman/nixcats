@@ -39,9 +39,15 @@ local repeat_jump = require("config.smart-repeat").make_repeatable_map(
     if trouble.is_open() then
       trouble.next({ skip_groups = true, jump = true })
     else
-      local ok_cmd, err = pcall(vim.cmd.cnext)
+      local current_file = vim.fn.expand("%:p")
+      -- Try cnext, wrap to first if at end
+      local ok_cmd = pcall(vim.cmd.cnext)
       if not ok_cmd then
-        vim.notify(err, vim.log.levels.ERROR)
+        pcall(vim.cmd.cfirst)
+      end
+      -- Only center if we switched files
+      if current_file ~= vim.fn.expand("%:p") then
+        vim.cmd("normal! zz")
       end
     end
   end,
@@ -49,9 +55,15 @@ local repeat_jump = require("config.smart-repeat").make_repeatable_map(
     if trouble.is_open() then
       trouble.prev({ skip_groups = true, jump = true })
     else
-      local ok_cmd, err = pcall(vim.cmd.cprev)
+      local current_file = vim.fn.expand("%:p")
+      -- Try cprev, wrap to last if at beginning
+      local ok_cmd = pcall(vim.cmd.cprev)
       if not ok_cmd then
-        vim.notify(err, vim.log.levels.ERROR)
+        pcall(vim.cmd.clast)
+      end
+      -- Only center if we switched files
+      if current_file ~= vim.fn.expand("%:p") then
+        vim.cmd("normal! zz")
       end
     end
   end

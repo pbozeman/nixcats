@@ -8,7 +8,7 @@ tokyonight.setup({
   transparent = true,
   styles = {
     sidebars = "transparent",
-    floats = "transparent",
+    floats = "normal", -- Use normal background for floats (like Trouble, completion menus)
     comments = { fg = "#f8c8dc", italic = true },
   },
   on_colors = function(colors)
@@ -17,6 +17,8 @@ tokyonight.setup({
     colors.error = "#bf616a"
     colors.red = "#bf616a"
     colors.red1 = "#bf616a"
+    -- Set float background to black
+    colors.bg_float = "#000000"
   end,
 })
 

@@ -2,6 +2,91 @@
 
 local M = {}
 
+-- Custom quickfix text formatter for better alignment
+function M.quickfix_format(info)
+  local items = vim.fn.getqflist({ id = info.id, items = 0 }).items
+  local lines = {}
+
+  for i = info.start_idx, info.end_idx do
+    local item = items[i]
+    local fname = item.bufnr ~= 0 and vim.fn.bufname(item.bufnr) or ""
+    local lnum = item.lnum
+    local text = item.text
+
+    -- Format: filename:line | text
+    local line = string.format("%-40s|%-4d | %s", fname, lnum, text)
+    table.insert(lines, line)
+  end
+
+  return lines
+end
+
+-- Set quickfix text function
+vim.o.quickfixtextfunc = "{info -> v:lua.require'plugins.verilog-tools'.quickfix_format(info)}"
+
+-- Center line after jumping to quickfix item
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  pattern = "[cl]*",
+  callback = function()
+    vim.cmd("normal! zz")
+  end,
+  desc = "Center line after quickfix navigation",
+})
+
+-- Center line after selecting from quickfix window (only if file changed)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function(args)
+    vim.keymap.set("n", "<CR>", function()
+      -- Get the quickfix item we're jumping to
+      local qf_idx = vim.fn.line(".")
+      local qf_item = vim.fn.getqflist()[qf_idx]
+      local target_file = vim.fn.bufname(qf_item.bufnr)
+      local current_file = vim.fn.expand("%:p")
+
+      vim.cmd(".cc")
+
+      -- Only center if we switched files
+      if target_file ~= current_file then
+        vim.cmd("normal! zz")
+      end
+    end, { buffer = args.buf, desc = "Jump to quickfix item and center" })
+  end,
+  desc = "Setup quickfix window keymaps",
+})
+
+-- Errorformat patterns for different tools
+M.errorformats = {
+  verilator = {
+    "%E%%-Error-%\\w%\\+: %f:%l:%c: %m",
+    "%W%%-Warning-%\\w%\\+: %f:%l:%c: %m",
+    "%E%%Error-%\\w%\\+: %f:%l:%c: %m",
+    "%W%%Warning-%\\w%\\+: %f:%l:%c: %m",
+    "%Z%p^~%#",
+    "%C%m",
+    "%-G%.%#",
+  },
+  iverilog = {
+    -- Standard iverilog format
+    "%E%f:%l: error: %m",
+    "%W%f:%l: warning: %m",
+    "%I%f:%l: note: %m",
+    -- Custom testbench format (ANSI codes stripped by makeprg)
+    -- Capture the whole line including CHECK
+    "%E./%f:%l %m",
+    "%E%f:%l %m",
+    -- Ignore FATAL and other lines
+    "%-GFATAL%.%#",
+    "%-G%.%#",
+  },
+  sby = {
+    "%ESBX file not found",
+    "%WSBX unknown result",
+    "%E%f:%l: %m",
+    "%-G%.%#",
+  },
+}
+
 --- Get the indentation of a line
 ---@param lnum number Line number (1-indexed)
 ---@return string Indentation string (spaces/tabs)
@@ -101,9 +186,81 @@ function M.wrap_verilator_custom()
   end)
 end
 
+--- Detect tool from make target
+---@param target string Make target name
+---@return string Tool name (verilator, iverilog, or sby)
+local function detect_tool(target)
+  if target:match("^lint") or target:match("^format") then
+    return "verilator"
+  elseif target:match("^tb") or target:match("^sim") then
+    return "iverilog"
+  elseif target:match("^formal") or target:match("_f$") then
+    return "sby"
+  else
+    -- Default to verilator for unknown targets
+    return "verilator"
+  end
+end
+
+--- Set errorformat and makeprg for a specific target
+---@param target string Make target name (e.g., "lint", "tb", "formal")
+function M.set_make(target)
+  local tool = detect_tool(target)
+  local formats = M.errorformats[tool] or M.errorformats.verilator
+  vim.bo.errorformat = table.concat(formats, ",")
+
+  -- For tb targets, create a wrapper script to strip ANSI codes
+  if target:match("^tb") then
+    local wrapper = vim.fn.tempname() .. ".sh"
+    local script = string.format("#!/bin/sh\nmake %s 2>&1 | sed 's/\\x1b\\[[0-9;]*m//g'\n", target)
+    vim.fn.writefile(vim.split(script, "\n"), wrapper)
+    vim.fn.setfperm(wrapper, "rwxr-xr-x")
+    vim.bo.makeprg = wrapper
+  else
+    vim.bo.makeprg = "make " .. target
+  end
+end
+
+--- Run make with appropriate errorformat
+---@param target string Make target name
+function M.make(target)
+  M.set_make(target)
+  vim.cmd("make")
+end
+
+--- Run make in a terminal (for targets with colored output like testbenches)
+---@param target string Make target name
+function M.make_term(target)
+  -- Open a terminal in a split and run make
+  vim.cmd("split")
+  vim.cmd("terminal make " .. target)
+  vim.cmd("startinsert")
+end
+
 -- Setup keybindings for Verilog/SystemVerilog files
 local function setup_keybindings(args)
   local bufnr = args.buf
+
+  -- Create buffer-local Make command
+  vim.api.nvim_buf_create_user_command(bufnr, "Make", function(opts)
+    local target = opts.args ~= "" and opts.args or "lint"
+    M.make(target)
+  end, {
+    nargs = "?",
+    desc = "Run make with smart errorformat detection",
+  })
+
+  -- Make/build keymaps
+  vim.keymap.set("n", "<leader>ml", function() M.make("lint") end,
+    { desc = "Make lint", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mt", function() M.make("tb") end,
+    { desc = "Make tb", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mT", function() M.make_term("tb") end,
+    { desc = "Make tb (terminal)", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mf", function() M.make("formal") end,
+    { desc = "Make formal", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mc", function() M.make("clean") end,
+    { desc = "Make clean", buffer = bufnr })
 
   -- Set keymaps directly - flattened structure
   vim.keymap.set({ "n", "v" }, "<leader>vf", function() M.wrap_verilog_format() end,
@@ -131,10 +288,11 @@ local function setup_keybindings(args)
   vim.keymap.set({ "n", "v" }, "<leader>vc", function() M.wrap_verilator_custom() end,
     { desc = "Waive custom rule", buffer = bufnr })
 
-  -- Add which-key group if available
+  -- Add which-key groups if available
   local wk_ok, wk = pcall(require, "which-key")
   if wk_ok then
     wk.add({
+      { "<leader>m", group = "make" },
       { "<leader>v", group = "verilog" },
     }, { buffer = bufnr })
   end

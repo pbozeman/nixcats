@@ -33,3 +33,10 @@ vim.keymap.set("i", "<c-\\>", function()
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", false)
   vim.cmd("TmuxNavigatePrevious")
 end, { desc = "Navigate previous" })
+
+-- Terminal mode: exit terminal mode then navigate
+vim.keymap.set("t", "<c-h>", "<C-\\><C-n><cmd>TmuxNavigateLeft<cr>", { desc = "Navigate left" })
+vim.keymap.set("t", "<c-j>", "<C-\\><C-n><cmd>TmuxNavigateDown<cr>", { desc = "Navigate down" })
+vim.keymap.set("t", "<c-k>", "<C-\\><C-n><cmd>TmuxNavigateUp<cr>", { desc = "Navigate up" })
+vim.keymap.set("t", "<c-l>", "<C-\\><C-n><cmd>TmuxNavigateRight<cr>", { desc = "Navigate right" })
+vim.keymap.set("t", "<c-\\>", "<C-\\><C-n><cmd>TmuxNavigatePrevious<cr>", { desc = "Navigate previous" })
