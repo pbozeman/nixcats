@@ -184,6 +184,7 @@
               blink-cmp
               clangd_extensions-nvim
               conform-nvim
+              diffview-nvim
               friendly-snippets
               gitsigns-nvim
               indent-blankline-nvim
