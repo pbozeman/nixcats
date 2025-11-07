@@ -75,24 +75,34 @@ neo_tree.setup({
 })
 
 -- Refresh neo-tree on git operations and focus changes
+local refresh_neotree = function()
+  local ok, manager = pcall(require, "neo-tree.sources.manager")
+  if ok then
+    local state = manager.get_state("filesystem")
+    if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
+      manager.refresh("filesystem")
+    end
+    local git_state = manager.get_state("git_status")
+    if git_state and git_state.winid and vim.api.nvim_win_is_valid(git_state.winid) then
+      manager.refresh("git_status")
+    end
+  end
+end
+
 vim.api.nvim_create_autocmd({ "BufWritePost", "FocusGained" }, {
   group = vim.api.nvim_create_augroup("neotree_refresh", { clear = true }),
-  callback = function()
-    -- Only refresh if neo-tree is loaded and visible
-    local ok, manager = pcall(require, "neo-tree.sources.manager")
-    if ok then
-      local state = manager.get_state("filesystem")
-      if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
-        manager.refresh("filesystem")
-      end
-      -- Also refresh git_status view if it's open
-      local git_state = manager.get_state("git_status")
-      if git_state and git_state.winid and vim.api.nvim_win_is_valid(git_state.winid) then
-        manager.refresh("git_status")
-      end
-    end
-  end,
+  callback = refresh_neotree,
 })
+
+-- Poll for git status changes every 2 seconds when neotree is visible
+local timer = vim.uv.new_timer()
+timer:start(
+  2000,
+  2000,
+  vim.schedule_wrap(function()
+    refresh_neotree()
+  end)
+)
 
 -- Keybindings
 local util = require("util")
