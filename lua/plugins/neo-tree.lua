@@ -49,7 +49,7 @@ neo_tree.setup({
 
   filesystem = {
     follow_current_file = {
-      enabled = true,
+      enabled = false,
     },
     use_libuv_file_watcher = true,
     filtered_items = {
