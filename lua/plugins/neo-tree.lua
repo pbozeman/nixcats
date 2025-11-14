@@ -61,17 +61,6 @@ neo_tree.setup({
       },
     },
   },
-
-  event_handlers = {
-    {
-      event = "git_status_changed",
-      handler = function(state)
-        vim.schedule(function()
-          require("neo-tree.sources.manager").refresh(state.name)
-        end)
-      end,
-    },
-  },
 })
 
 -- Refresh neo-tree on git operations and focus changes
