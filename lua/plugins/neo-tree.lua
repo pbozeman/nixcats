@@ -83,16 +83,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "FocusGained" }, {
   callback = refresh_neotree,
 })
 
--- Poll for git status changes every 2 seconds when neotree is visible
-local timer = vim.uv.new_timer()
-timer:start(
-  2000,
-  2000,
-  vim.schedule_wrap(function()
-    refresh_neotree()
-  end)
-)
-
 -- Keybindings
 local util = require("util")
 

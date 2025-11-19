@@ -40,16 +40,24 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   end,
 })
 
--- Periodic file change checking (every 1 second)
+-- Periodic file change checking (every 5 seconds) - only for visible buffers
 local uv = vim.uv or vim.loop
 local timer = uv.new_timer()
 if timer then
   timer:start(
-    1000, -- Start after 1 second
-    1000, -- Repeat every 1 second
+    5000, -- Start after 5 seconds
+    5000, -- Repeat every 5 seconds
     vim.schedule_wrap(function()
-      if vim.o.buftype ~= "nofile" then
-        vim.cmd("checktime")
+      -- Only check visible buffers
+      local checked_buffers = {}
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_is_valid(win) then
+          local buf = vim.api.nvim_win_get_buf(win)
+          if not checked_buffers[buf] and vim.bo[buf].buftype ~= "nofile" then
+            vim.cmd("checktime " .. buf)
+            checked_buffers[buf] = true
+          end
+        end
       end
     end)
   )
