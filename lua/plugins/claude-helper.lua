@@ -68,7 +68,7 @@ local function ask_claude()
     end
 
     prompt = string.format(
-      "%s\n\n%d diagnostic%s in %s:\n\n%s\n\nCode:\n```%s\n%s\n```\n\n(If no additional input follows, please help fix this issue. Otherwise, ignore this default request and follow the user's question/comment below.)",
+      "%s\n\n(If no additional input follows, please help fix this issue. Otherwise, ignore this default request and follow the user's question/comment below.)\n\n%d diagnostic%s in %s:\n\n%s\n\nCode:\n```%s\n%s\n```\n\n",
       source_type,
       #diagnostics,
       #diagnostics > 1 and "s" or "",
@@ -90,7 +90,7 @@ local function ask_claude()
     end
 
     prompt = string.format(
-      "%s\n\n%s:\n\n```%s\n%s\n```\n\n(If no additional input follows, please explain this code. Otherwise, ignore this default request and follow the user's question/comment below.)",
+      "%s\n\n(If no additional input follows, please explain this code. Otherwise, ignore this default request and follow the user's question/comment below.)\n\n%s:\n\n```%s\n%s\n```\n\n",
       source_type,
       location_info,
       filetype,
