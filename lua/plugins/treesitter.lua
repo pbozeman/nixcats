@@ -1,29 +1,24 @@
 -- nvim-treesitter configuration
 -- Provides syntax highlighting, indentation, and text objects via tree-sitter
 
-require("nvim-treesitter.configs").setup({
-  -- Highlighting
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
+-- nvim-treesitter is now the "main" branch rewrite: it no longer exposes
+-- `nvim-treesitter.configs` or the highlight/indent/incremental_selection
+-- modules. Highlighting, indentation and folding are now driven by Neovim's
+-- native treesitter runtime, enabled per-buffer. Parsers are provided by the
+-- Nix `nvim-treesitter.withAllGrammars` package (already on the runtimepath).
 
-  -- Indentation
-  indent = {
-    enable = true,
-  },
-
-  -- Incremental selection
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<C-space>",
-      node_incremental = "<C-space>",
-      scope_incremental = false,
-      node_decremental = "<bs>",
-    },
-  },
+-- Enable highlighting (and experimental treesitter indentation) on every
+-- buffer that has a parser available. pcall guards filetypes with no parser.
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    if pcall(vim.treesitter.start) then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
 })
+
+-- NOTE: incremental_selection was removed in the rewrite and has no built-in
+-- replacement; the old <C-space>/<bs> expand/shrink mapping is dropped.
 
 -- Auto-close and auto-rename HTML tags
 require("nvim-ts-autotag").setup({
@@ -34,9 +29,10 @@ require("nvim-ts-autotag").setup({
   },
 })
 
--- Enable folding via treesitter
+-- Enable folding via treesitter (native Neovim foldexpr; returns 0 for
+-- buffers without a parser, so it is safe to set globally)
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldenable = false -- Don't fold by default
 
 -- Language mapping for SystemVerilog

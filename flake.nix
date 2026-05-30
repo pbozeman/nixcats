@@ -7,7 +7,7 @@
   description = "neovim flake using nixcats";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
 
     # neovim-nightly-overlay = {
@@ -113,7 +113,7 @@
               ripgrep
 
               # Bash
-              nodePackages.bash-language-server
+              bash-language-server
               shfmt
 
               # C/C++
@@ -130,8 +130,8 @@
               gopls
 
               # JavaScript/TypeScript
-              nodePackages.prettier
-              nodePackages.typescript-language-server
+              prettier
+              typescript-language-server
 
               # Lua
               lua-language-server
@@ -144,7 +144,7 @@
               # Nix
               alejandra
               nil
-              nixfmt-rfc-style
+              nixfmt
 
               # Python
               black
@@ -165,10 +165,10 @@
               taplo
 
               # Web (HTML, CSS, JSON, ESLint)
-              nodePackages.vscode-langservers-extracted
+              vscode-langservers-extracted
 
               # YAML
-              nodePackages.yaml-language-server
+              yaml-language-server
             ]
             # Verilog/SystemVerilog - exclude on Darwin due to bazel build issues
             ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
@@ -351,7 +351,7 @@
               name = defaultPackageName;
               packages = with pkgs; [
                 stylua
-                nixfmt-rfc-style
+                nixfmt
               ];
               inputsFrom = [ ];
               shellHook = '''';
