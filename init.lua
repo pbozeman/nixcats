@@ -17,6 +17,7 @@ require("config.smart-repeat")
 
 -- Load plugins
 require("plugins.treesitter") -- Must load before plugins that depend on it
+require("plugins.snacks") -- Load before any Snacks.toggle is created (e.g. treesitter-context)
 require("plugins.treesitter-context") -- Depends on treesitter
 require("plugins.ts-comments") -- Depends on treesitter
 require("plugins.colorscheme")
@@ -24,7 +25,6 @@ require("plugins.which-key")
 require("plugins.trouble")
 require("plugins.todo-comments")
 require("plugins.lualine")
-require("plugins.snacks")
 require("plugins.gitsigns")
 require("plugins.diffview")
 require("plugins.blink")

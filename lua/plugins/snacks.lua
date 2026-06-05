@@ -18,6 +18,12 @@ snacks.setup({
   words = {
     enabled = true,
   },
+  -- Toggle menu: show just the feature name (no "Enable "/"Disable " verb).
+  -- The verb otherwise reflects the *action for the current state*, so the
+  -- menu reads as a mix; on/off is still conveyed by Snacks' color + icon.
+  toggle = {
+    wk_desc = { enabled = "", disabled = "" },
+  },
 })
 
 -- Keymaps
