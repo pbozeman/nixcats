@@ -65,12 +65,22 @@ conform.setup({
     systemverilog = { "verible" },
   },
 
-  -- Format on save
-  format_on_save = {
+  -- Format on save (gated by vim.b.autoformat / vim.g.autoformat;
+  -- toggle with <leader>uf / <leader>uF — see lua/plugins/ui-toggles.lua)
+  format_on_save = function(bufnr)
+    -- Buffer-local setting overrides global; both default to enabled.
+    if vim.b[bufnr].autoformat == false then
+      return
+    end
+    if vim.b[bufnr].autoformat == nil and vim.g.autoformat == false then
+      return
+    end
     -- These options will be passed to conform.format()
-    timeout_ms = 2000,
-    lsp_format = "fallback",
-  },
+    return {
+      timeout_ms = 2000,
+      lsp_format = "fallback",
+    }
+  end,
 
   -- Customize formatters
   formatters = {

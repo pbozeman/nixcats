@@ -94,3 +94,29 @@ Snacks.toggle({
     end
   end,
 }):map("<leader>ua")
+
+-- Toggle auto-format on save (global)
+Snacks.toggle({
+  name = "Auto Format (Global)",
+  get = function()
+    return vim.g.autoformat == nil or vim.g.autoformat
+  end,
+  set = function(state)
+    vim.g.autoformat = state
+  end,
+}):map("<leader>uF")
+
+-- Toggle auto-format on save (buffer)
+Snacks.toggle({
+  name = "Auto Format (Buffer)",
+  get = function()
+    local global = vim.g.autoformat == nil or vim.g.autoformat
+    if vim.b.autoformat == nil then
+      return global
+    end
+    return vim.b.autoformat
+  end,
+  set = function(state)
+    vim.b.autoformat = state
+  end,
+}):map("<leader>uf")
