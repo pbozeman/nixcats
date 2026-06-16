@@ -78,7 +78,7 @@ conform.setup({
     -- These options will be passed to conform.format()
     return {
       timeout_ms = 2000,
-      lsp_format = "fallback",
+      lsp_format = vim.bo[bufnr].filetype == "nix" and "never" or "fallback",
     }
   end,
 
@@ -112,7 +112,7 @@ conform.setup({
 -- Manual format keymap
 vim.keymap.set({ "n", "v" }, "<leader>cf", function()
   conform.format({
-    lsp_format = "fallback",
+    lsp_format = vim.bo.filetype == "nix" and "never" or "fallback",
     timeout_ms = 2000,
   })
 end, { desc = "Format" })

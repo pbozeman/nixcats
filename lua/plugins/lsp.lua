@@ -261,6 +261,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
     local buffer = ev.buf
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+    if client and client.name == "nil_ls" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
 
     for _, keymap in ipairs(M.get_keymaps()) do
       local opts = { buffer = buffer, desc = keymap.desc }
