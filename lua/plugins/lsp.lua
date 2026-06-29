@@ -83,7 +83,7 @@ local lsp_servers = {
   marksman = {
     cmd = { "marksman", "server" },
     filetypes = { "markdown", "markdown.mdx" },
-    root_markers = { ".marksman.toml", ".git" },
+    root_markers = { ".marksman.toml" },
   },
 
   -- Nix
