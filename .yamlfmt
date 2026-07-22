@@ -1,0 +1,5 @@
+# yamlfmt strips blank lines by default; keep them (collapsing runs of
+# multiple blanks to one). Auto-discovered by the pre-commit yamlfmt hook.
+formatter:
+  type: basic
+  retain_line_breaks_single: true

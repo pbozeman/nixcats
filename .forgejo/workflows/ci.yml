@@ -1,0 +1,28 @@
+# Forgejo Actions CI for the nixCats Neovim flake: lint (pre-commit hooks) +
+# build the neovim package.
+#
+# Runs on the `native` (host-executor) runner — the runner VM is NixOS, so
+# `nix build` is native + sandboxed with a persistent store and the lab caches
+# wired into its nix.conf (no container, no install-nix-action).
+#
+# Outputs are addressed by explicit `x86_64-linux` attrs rather than
+# `nix flake check`: this flake enumerates `platforms.all`, which includes
+# non-buildable systems (e.g. x86_64-uefi) that a full check would choke on.
+name: ci
+
+on: # yamllint disable-line rule:truthy
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: native
+    steps:
+      - uses: actions/checkout@v4
+      - run: nix build -L .#checks.x86_64-linux.pre-commit
+
+  build:
+    runs-on: native
+    steps:
+      - uses: actions/checkout@v4
+      - run: nix build -L .#packages.x86_64-linux.nvim

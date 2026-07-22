@@ -104,7 +104,7 @@ function M.wrap_verilator_lint(rule)
 
   if mode == "v" or mode == "V" or mode == "\22" then -- visual modes
     -- Get visual selection range
-    vim.cmd('normal! \27') -- escape visual mode
+    vim.cmd("normal! \27") -- escape visual mode
     start_line = vim.fn.line("'<")
     end_line = vim.fn.line("'>")
   else
@@ -135,7 +135,7 @@ function M.wrap_verilog_format()
 
   if mode == "v" or mode == "V" or mode == "\22" then -- visual modes
     -- Get visual selection range
-    vim.cmd('normal! \27') -- escape visual mode
+    vim.cmd("normal! \27") -- escape visual mode
     start_line = vim.fn.line("'<")
     end_line = vim.fn.line("'>")
   else
@@ -251,42 +251,58 @@ local function setup_keybindings(args)
   })
 
   -- Make/build keymaps
-  vim.keymap.set("n", "<leader>ml", function() M.make("lint") end,
-    { desc = "Make lint", buffer = bufnr })
-  vim.keymap.set("n", "<leader>mt", function() M.make("tb") end,
-    { desc = "Make tb", buffer = bufnr })
-  vim.keymap.set("n", "<leader>mT", function() M.make_term("tb") end,
-    { desc = "Make tb (terminal)", buffer = bufnr })
-  vim.keymap.set("n", "<leader>mf", function() M.make("formal") end,
-    { desc = "Make formal", buffer = bufnr })
-  vim.keymap.set("n", "<leader>mc", function() M.make("clean") end,
-    { desc = "Make clean", buffer = bufnr })
+  vim.keymap.set("n", "<leader>ml", function()
+    M.make("lint")
+  end, { desc = "Make lint", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mt", function()
+    M.make("tb")
+  end, { desc = "Make tb", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mT", function()
+    M.make_term("tb")
+  end, { desc = "Make tb (terminal)", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mf", function()
+    M.make("formal")
+  end, { desc = "Make formal", buffer = bufnr })
+  vim.keymap.set("n", "<leader>mc", function()
+    M.make("clean")
+  end, { desc = "Make clean", buffer = bufnr })
 
   -- Set keymaps directly - flattened structure
-  vim.keymap.set({ "n", "v" }, "<leader>vf", function() M.wrap_verilog_format() end,
-    { desc = "Wrap verilog_format off/on", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vf", function()
+    M.wrap_verilog_format()
+  end, { desc = "Wrap verilog_format off/on", buffer = bufnr })
 
   -- Lint waivers
-  vim.keymap.set({ "n", "v" }, "<leader>vu", function() M.wrap_verilator_lint("UNUSEDSIGNAL") end,
-    { desc = "Waive UNUSEDSIGNAL", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vd", function() M.wrap_verilator_lint("UNDRIVEN") end,
-    { desc = "Waive UNDRIVEN", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vp", function() M.wrap_verilator_lint("UNUSEDPARAM") end,
-    { desc = "Waive UNUSEDPARAM", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vb", function() M.wrap_verilator_lint("BLKSEQ") end,
-    { desc = "Waive BLKSEQ", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vw", function() M.wrap_verilator_lint("WIDTHCONCAT") end,
-    { desc = "Waive WIDTHCONCAT", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vm", function() M.wrap_verilator_lint("MULTIDRIVEN") end,
-    { desc = "Waive MULTIDRIVEN", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>va", function() M.wrap_verilator_lint("ASSIGNIN") end,
-    { desc = "Waive ASSIGNIN", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vs", function() M.wrap_verilator_lint("SYNCASYNCNET") end,
-    { desc = "Waive SYNCASYNCNET", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vi", function() M.wrap_verilator_lint("PINMISSING") end,
-    { desc = "Waive PINMISSING", buffer = bufnr })
-  vim.keymap.set({ "n", "v" }, "<leader>vc", function() M.wrap_verilator_custom() end,
-    { desc = "Waive custom rule", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vu", function()
+    M.wrap_verilator_lint("UNUSEDSIGNAL")
+  end, { desc = "Waive UNUSEDSIGNAL", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vd", function()
+    M.wrap_verilator_lint("UNDRIVEN")
+  end, { desc = "Waive UNDRIVEN", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vp", function()
+    M.wrap_verilator_lint("UNUSEDPARAM")
+  end, { desc = "Waive UNUSEDPARAM", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vb", function()
+    M.wrap_verilator_lint("BLKSEQ")
+  end, { desc = "Waive BLKSEQ", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vw", function()
+    M.wrap_verilator_lint("WIDTHCONCAT")
+  end, { desc = "Waive WIDTHCONCAT", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vm", function()
+    M.wrap_verilator_lint("MULTIDRIVEN")
+  end, { desc = "Waive MULTIDRIVEN", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>va", function()
+    M.wrap_verilator_lint("ASSIGNIN")
+  end, { desc = "Waive ASSIGNIN", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vs", function()
+    M.wrap_verilator_lint("SYNCASYNCNET")
+  end, { desc = "Waive SYNCASYNCNET", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vi", function()
+    M.wrap_verilator_lint("PINMISSING")
+  end, { desc = "Waive PINMISSING", buffer = bufnr })
+  vim.keymap.set({ "n", "v" }, "<leader>vc", function()
+    M.wrap_verilator_custom()
+  end, { desc = "Waive custom rule", buffer = bufnr })
 
   -- Add which-key groups if available
   local wk_ok, wk = pcall(require, "which-key")

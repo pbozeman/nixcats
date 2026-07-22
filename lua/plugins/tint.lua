@@ -35,7 +35,12 @@ vim.api.nvim_create_autocmd("WinEnter", {
     local current_filetype = vim.bo[current_buf].filetype
 
     -- When entering neo-tree, snacks, trouble, or quickfix, untint the window we left
-    if current_filetype == "neo-tree" or current_filetype:match("^snacks_") or current_filetype == "trouble" or current_filetype == "qf" then
+    if
+      current_filetype == "neo-tree"
+      or current_filetype:match("^snacks_")
+      or current_filetype == "trouble"
+      or current_filetype == "qf"
+    then
       if last_win and vim.api.nvim_win_is_valid(last_win) then
         tint.untint(last_win)
       end
@@ -49,7 +54,12 @@ vim.api.nvim_create_autocmd("WinEnter", {
 
       if win == current_win then
         tint.untint(win)
-      elseif filetype ~= "neo-tree" and not filetype:match("^snacks_") and filetype ~= "trouble" and filetype ~= "qf" then
+      elseif
+        filetype ~= "neo-tree"
+        and not filetype:match("^snacks_")
+        and filetype ~= "trouble"
+        and filetype ~= "qf"
+      then
         tint.tint(win)
       end
     end

@@ -41,7 +41,7 @@ vim.opt.foldenable = false -- Don't fold by default
 -- Register both filetype->parser and language->parser mappings
 -- This keeps highlight queries working (they're in queries/verilog/)
 -- Queries symlinked: after/queries/systemverilog -> after/queries/verilog
-vim.treesitter.language.register("systemverilog", {"verilog", "systemverilog"})
+vim.treesitter.language.register("systemverilog", { "verilog", "systemverilog" })
 
 -- Ensure treesitter parses on buffer enter
 -- This is needed for mini.ai to work immediately (otherwise parser is lazy)

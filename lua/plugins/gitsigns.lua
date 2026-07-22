@@ -31,22 +31,19 @@ gitsigns.setup({
     end
 
     -- Navigation
-    local hunk_jump = repeat_jump(
-      function()
-        if vim.wo.diff then
-          vim.cmd.normal({ "]c", bang = true })
-        else
-          gs.nav_hunk("next", { target = "all" })
-        end
-      end,
-      function()
-        if vim.wo.diff then
-          vim.cmd.normal({ "[c", bang = true })
-        else
-          gs.nav_hunk("prev", { target = "all" })
-        end
+    local hunk_jump = repeat_jump(function()
+      if vim.wo.diff then
+        vim.cmd.normal({ "]c", bang = true })
+      else
+        gs.nav_hunk("next", { target = "all" })
       end
-    )
+    end, function()
+      if vim.wo.diff then
+        vim.cmd.normal({ "[c", bang = true })
+      else
+        gs.nav_hunk("prev", { target = "all" })
+      end
+    end)
     map("n", "]h", hunk_jump("forward"), "Next Hunk")
     map("n", "[h", hunk_jump("backward"), "Prev Hunk")
 

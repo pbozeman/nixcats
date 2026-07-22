@@ -10,6 +10,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
 
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # neovim-nightly-overlay = {
     #   url = "github:nix-community/neovim-nightly-overlay";
     # };
@@ -26,10 +31,11 @@
 
   # see :help nixCats.flake.outputs
   outputs =
-    { self
-    , nixpkgs
-    , nixCats
-    , ...
+    {
+      self,
+      nixpkgs,
+      nixCats,
+      ...
     }@inputs:
     let
       inherit (nixCats) utils;
@@ -86,14 +92,15 @@
       # and
       # :help nixCats.flake.outputs.categoryDefinitions.scheme
       categoryDefinitions =
-        { pkgs
-        , settings
-        , categories
-        , extra
-        , name
-        , mkPlugin
-        , ...
-        }@packageDef:
+        {
+          pkgs,
+          settings,
+          categories,
+          extra,
+          name,
+          mkPlugin,
+          ...
+        }:
         {
           # to define and use a new category, simply add a new list to a set
           # here, and later, you will include categoryname = true; in the set
@@ -106,74 +113,76 @@
           # at RUN TIME for plugins. Will be available to PATH within neovim terminal
           # this includes LSPs
           lspsAndRuntimeDeps = {
-            general = with pkgs; [
-              # Fuzzy finder tools
-              fd
-              fzf
-              ripgrep
+            general =
+              with pkgs;
+              [
+                # Fuzzy finder tools
+                fd
+                fzf
+                ripgrep
 
-              # Bash
-              bash-language-server
-              shfmt
+                # Bash
+                bash-language-server
+                shfmt
 
-              # C/C++
-              clang-tools
+                # C/C++
+                clang-tools
 
-              # CMake
-              cmake-format
-              neocmakelsp
+                # CMake
+                cmake-format
+                neocmakelsp
 
-              # Go
-              gofumpt
-              goimports-reviser
-              golines
-              gopls
+                # Go
+                gofumpt
+                goimports-reviser
+                golines
+                gopls
 
-              # JavaScript/TypeScript
-              prettier
-              typescript-language-server
+                # JavaScript/TypeScript
+                prettier
+                typescript-language-server
 
-              # Lua
-              lua-language-server
-              stylua
+                # Lua
+                lua-language-server
+                stylua
 
-              # Markdown
-              markdownlint-cli2
-              marksman
+                # Markdown
+                markdownlint-cli2
+                marksman
 
-              # Nix
-              alejandra
-              nil
-              nixfmt
+                # Nix
+                alejandra
+                nil
+                nixfmt
 
-              # Python
-              black
-              isort
-              pyright
+                # Python
+                black
+                isort
+                pyright
 
-              # Quarto (markdown-based scientific documents)
-              quarto
+                # Quarto (markdown-based scientific documents)
+                quarto
 
-              # Rust
-              rust-analyzer
-              rustfmt
+                # Rust
+                rust-analyzer
+                rustfmt
 
-              # TeX/LaTeX
-              tex-fmt
+                # TeX/LaTeX
+                tex-fmt
 
-              # TOML
-              taplo
+                # TOML
+                taplo
 
-              # Web (HTML, CSS, JSON, ESLint)
-              vscode-langservers-extracted
+                # Web (HTML, CSS, JSON, ESLint)
+                vscode-langservers-extracted
 
-              # YAML
-              yaml-language-server
-            ]
-            # Verilog/SystemVerilog - exclude on Darwin due to bazel build issues
-            ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
-              verible
-            ];
+                # YAML
+                yaml-language-server
+              ]
+              # Verilog/SystemVerilog - exclude on Darwin due to bazel build issues
+              ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
+                verible
+              ];
           };
 
           # This is for plugins that will load at startup without using packadd:
@@ -315,51 +324,131 @@
     in
 
     # see :help nixCats.flake.outputs.exports
-    forEachSystem
-      (
-        system:
-        let
-          nixCatsBuilder = utils.baseBuilder luaPath
-            {
-              inherit
-                nixpkgs
-                system
-                dependencyOverlays
-                extra_pkg_config
-                ;
-            }
-            categoryDefinitions
-            packageDefinitions;
-          defaultPackage = nixCatsBuilder defaultPackageName;
+    forEachSystem (
+      system:
+      let
+        nixCatsBuilder = utils.baseBuilder luaPath {
+          inherit
+            nixpkgs
+            system
+            dependencyOverlays
+            extra_pkg_config
+            ;
+        } categoryDefinitions packageDefinitions;
+        defaultPackage = nixCatsBuilder defaultPackageName;
 
-          # this is just for using utils such as pkgs.mkShell
-          # The one used to build neovim is resolved inside the builder
-          # and is passed to our categoryDefinitions and packageDefinitions
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          # these outputs will be wrapped with ${system} by utils.eachSystem
+        # this is just for using utils such as pkgs.mkShell
+        # The one used to build neovim is resolved inside the builder
+        # and is passed to our categoryDefinitions and packageDefinitions
+        pkgs = import nixpkgs { inherit system; };
 
-          # this will make a package out of each of the packageDefinitions defined
-          # above and set the default package to the one passed in here.
-          packages = utils.mkAllWithDefault defaultPackage;
+        # git-hooks.nix drives both the local pre-commit hook (installed via
+        # the devShell shellHook) and the `checks.<system>.pre-commit` flake
+        # output that CI builds. Single source of truth for formatting/lint.
+        pre-commit-check = inputs.git-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            # Lua
+            stylua.enable = true;
 
-          # choose your package for devShell
-          # and add whatever else you want in it.
-          devShells = {
-            default = pkgs.mkShell {
-              name = defaultPackageName;
-              packages = with pkgs; [
-                stylua
-                nixfmt
-              ];
-              inputsFrom = [ ];
-              shellHook = '''';
+            # Nix
+            nixfmt.enable = true;
+            deadnix = {
+              enable = true;
+              settings = {
+                noLambdaArg = true;
+                noLambdaPatternNames = true;
+              };
+            };
+
+            # Shell
+            shellcheck = {
+              enable = true;
+              # .envrc is a direnv rc file (`use flake`), not a standalone
+              # script; shellcheck flags it for a missing shebang (SC2148).
+              excludes = [ "^\\.envrc$" ];
+            };
+            shfmt = {
+              enable = true;
+              settings = {
+                case-indent = true;
+                indent = 2;
+              };
+            };
+
+            # Markdown
+            prettier = {
+              enable = true;
+              types = [ "markdown" ];
+              settings.prose-wrap = "always";
+            };
+
+            # YAML
+            yamlfmt = {
+              enable = true;
+              # write fixes (not just lint); config is the auto-discovered
+              # ./.yamlfmt file, which keeps blank lines.
+              settings.lint-only = false;
+            };
+            yamllint = {
+              enable = true;
+              settings.configuration = ''
+                extends: relaxed
+
+                rules:
+                  line-length:
+                    max: 120
+              '';
+            };
+
+            # JSON (flake.lock is nix-managed; don't touch it)
+            check-json = {
+              enable = true;
+              excludes = [ "flake\\.lock" ];
+            };
+
+            # Secrets
+            gitleaks = {
+              enable = true;
+              name = "gitleaks";
+              description = "Scan staged changes for secrets";
+              entry = "${pkgs.gitleaks}/bin/gitleaks git --pre-commit --staged --redact --no-banner --no-color";
+              always_run = true;
+              pass_filenames = false;
             };
           };
+        };
+      in
+      {
+        # these outputs will be wrapped with ${system} by utils.eachSystem
 
-        }
-      )
+        # this will make a package out of each of the packageDefinitions defined
+        # above and set the default package to the one passed in here.
+        packages = utils.mkAllWithDefault defaultPackage;
+
+        checks = {
+          pre-commit = pre-commit-check;
+        };
+
+        # choose your package for devShell
+        # and add whatever else you want in it.
+        devShells = {
+          default = pkgs.mkShell {
+            name = defaultPackageName;
+            inherit (pre-commit-check) shellHook;
+            packages =
+              with pkgs;
+              [
+                stylua
+                nixfmt
+              ]
+              ++ pre-commit-check.enabledPackages;
+            inputsFrom = [ ];
+          };
+        };
+
+      }
+    )
     // (
       let
         # we also export a nixos module to allow reconfiguration from
@@ -396,13 +485,9 @@
 
         # this will make an overlay out of each of the packageDefinitions
         # defined above and set the default overlay to the one named here.
-        overlays = utils.makeOverlays luaPath
-          {
-            inherit nixpkgs dependencyOverlays extra_pkg_config;
-          }
-          categoryDefinitions
-          packageDefinitions
-          defaultPackageName;
+        overlays = utils.makeOverlays luaPath {
+          inherit nixpkgs dependencyOverlays extra_pkg_config;
+        } categoryDefinitions packageDefinitions defaultPackageName;
 
         nixosModules.default = nixosModule;
         homeModules.default = homeModule;
