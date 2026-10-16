@@ -410,11 +410,7 @@
             # Secrets
             gitleaks = {
               enable = true;
-              name = "gitleaks";
-              description = "Scan staged changes for secrets";
-              entry = "${pkgs.gitleaks}/bin/gitleaks git --pre-commit --staged --redact --no-banner --no-color";
               always_run = true;
-              pass_filenames = false;
             };
           };
         };
